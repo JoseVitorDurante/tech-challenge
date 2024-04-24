@@ -1,0 +1,36 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+
+spring:
+  application:
+    name: tech-challenge-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/tech-challenge?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      jdbc:
+        lob.non-contextual-creation: true
+    properties:
+      hibernate:
+        show_sql: true
+    output:
+      ansi:
+        enabled: Always
+    defer-datasource-initialization: true  #colocado para subir data.sql
+  sql:
+    init:
+      mode: always  #colocado para subir data.sql
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

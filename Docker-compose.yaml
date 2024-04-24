@@ -1,0 +1,17 @@
+# Comando para executar: docker compose up --build --force-recreate
+version: '3.7'
+
+services:
+
+  ##############################################
+  db_tech_challenge:
+    container_name: db_tech_challenge
+    image: 'mysql:8.0.29-debian'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+    ports:
+      - "3306:3306"
+      - '5004:5004'
+    volumes:
+      - /home/user/Desktop/db:/var/lib/mysql
