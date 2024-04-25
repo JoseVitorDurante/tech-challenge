@@ -1,4 +1,4 @@
-package br.com.techChallenge.core.domain.person;
+package br.com.techChallenge.core.domain.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonDomain {
+public class CategoryDomain {
     private UUID id;
     private String name;
-    private String cpf;
 }

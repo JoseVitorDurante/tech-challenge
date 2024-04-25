@@ -14,8 +14,6 @@ public interface PersonPersistencePort {
 
     Optional<PersonDomain> findByCpf(String cpf);
 
-    PersonDomain update(PersonDomain personDomain);
-
     void delete(PersonDomain personDomain);
 
     List<PersonDomain> findAll();

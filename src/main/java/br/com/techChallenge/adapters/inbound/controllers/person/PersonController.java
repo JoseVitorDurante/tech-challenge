@@ -1,6 +1,7 @@
 package br.com.techChallenge.adapters.inbound.controllers.person;
 
-import br.com.techChallenge.adapters.dtos.person.PersonDto;
+import br.com.techChallenge.adapters.dtos.person.PersonDTO;
+import br.com.techChallenge.adapters.dtos.person.PersonInputDTO;
 import br.com.techChallenge.core.domain.person.PersonDomain;
 import br.com.techChallenge.core.ports.person.PersonServicePort;
 import lombok.AllArgsConstructor;
@@ -24,32 +25,32 @@ public class PersonController {
     final ModelMapper modelMapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PersonDto> getById(@PathVariable UUID id) {
+    public ResponseEntity<PersonDTO> getById(@PathVariable UUID id) {
         PersonDomain personDomainOptional = personServicePort.findById(id);
-        PersonDto personDto = modelMapper.map(personDomainOptional, PersonDto.class);
+        PersonDTO personDto = modelMapper.map(personDomainOptional, PersonDTO.class);
         return ResponseEntity.ok(personDto);
 
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PersonDto>> getAll() {
+    public ResponseEntity<List<PersonDTO>> getAll() {
         List<PersonDomain> allPersons = personServicePort.findAll();
 
-        List<PersonDto> allPersonDtos = allPersons.stream()
-                .map(person -> modelMapper.map(person, PersonDto.class))
+        List<PersonDTO> allPersonDTOS = allPersons.stream()
+                .map(person -> modelMapper.map(person, PersonDTO.class))
                 .collect(Collectors.toList());
 
-        if (allPersonDtos.isEmpty())
+        if (allPersonDTOS.isEmpty())
             return ResponseEntity.noContent().build();
 
-        return ResponseEntity.ok(allPersonDtos);
+        return ResponseEntity.ok(allPersonDTOS);
     }
 
     @GetMapping("/cpf/{cpf}")
-    public ResponseEntity<PersonDto> findByCpf(@PathVariable String cpf) {
+    public ResponseEntity<PersonDTO> findByCpf(@PathVariable String cpf) {
         Optional<PersonDomain> personDomainOptional = personServicePort.findByCpf(cpf);
         if (personDomainOptional.isPresent()) {
-            PersonDto personDto = modelMapper.map(personDomainOptional.get(), PersonDto.class);
+            PersonDTO personDto = modelMapper.map(personDomainOptional.get(), PersonDTO.class);
             return ResponseEntity.ok(personDto);
         } else {
             return ResponseEntity.notFound().build();
@@ -57,20 +58,20 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonDto> save(@RequestBody PersonDto pessoaDto) {
-        PersonDomain domain = modelMapper.map(pessoaDto, PersonDomain.class);
+    public ResponseEntity<PersonDTO> save(@RequestBody PersonInputDTO personInputDTO) {
+        PersonDomain domain = modelMapper.map(personInputDTO, PersonDomain.class);
         PersonDomain savedPessoa = personServicePort.save(domain);
-        PersonDto dto = modelMapper.map(savedPessoa, PersonDto.class);
+        PersonDTO dto = modelMapper.map(savedPessoa, PersonDTO.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonDto> update(@PathVariable UUID id, @RequestBody PersonDto pessoaDto) {
-        pessoaDto.setId(id);
+    public ResponseEntity<PersonDTO> update(@PathVariable UUID id, @RequestBody PersonInputDTO personInputDTO) {
+        PersonDomain domain = modelMapper.map(personInputDTO, PersonDomain.class);
+        domain.setId(id);
 
-        PersonDomain domain = modelMapper.map(pessoaDto, PersonDomain.class);
         PersonDomain updatedPessoa = personServicePort.update(domain);
-        PersonDto dto = modelMapper.map(updatedPessoa, PersonDto.class);
+        PersonDTO dto = modelMapper.map(updatedPessoa, PersonDTO.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }

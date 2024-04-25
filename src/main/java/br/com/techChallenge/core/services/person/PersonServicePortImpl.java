@@ -53,7 +53,7 @@ public class PersonServicePortImpl implements PersonServicePort {
 
         modelMapper.map(updatePersonDomain, domain);
 
-        return personPersistencePort.update(domain);
+        return personPersistencePort.save(domain);
     }
 
     @Override

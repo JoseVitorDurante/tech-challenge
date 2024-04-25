@@ -2,8 +2,13 @@ package br.com.techChallenge.adapters.configs;
 
 
 import br.com.techChallenge.TechChallengeApplication;
+import br.com.techChallenge.core.ports.category.CategoryPersistencePort;
 import br.com.techChallenge.core.ports.person.PersonPersistencePort;
+import br.com.techChallenge.core.ports.product.ProductPersistencePort;
+import br.com.techChallenge.core.ports.product.ProductServicePort;
+import br.com.techChallenge.core.services.category.CategoryServicePortImpl;
 import br.com.techChallenge.core.services.person.PersonServicePortImpl;
+import br.com.techChallenge.core.services.product.ProductServicePortImpl;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +20,18 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
 
     @Bean
-    PersonServicePortImpl personServicePortImpl(PersonPersistencePort persistencePort, ModelMapper modelMapper) {
+    public PersonServicePortImpl personServicePortImpl(PersonPersistencePort persistencePort, ModelMapper modelMapper) {
         return new PersonServicePortImpl(persistencePort, modelMapper);
+    }
+
+    @Bean
+    public ProductServicePort productServicePort(ProductPersistencePort productPersistencePort, CategoryPersistencePort categoryPersistencePort,ModelMapper modelMapper) {
+        return new ProductServicePortImpl(productPersistencePort, categoryPersistencePort, modelMapper);
+    }
+
+    @Bean
+    public CategoryServicePortImpl categoryServicePortImpl(CategoryPersistencePort categoryPersistencePort, ProductPersistencePort productPersistencePort, ModelMapper modelMapper) {
+        return new CategoryServicePortImpl(categoryPersistencePort, productPersistencePort, modelMapper);
     }
 
     @Bean

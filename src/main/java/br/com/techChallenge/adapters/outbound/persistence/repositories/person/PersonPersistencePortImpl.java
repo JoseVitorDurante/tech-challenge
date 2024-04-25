@@ -51,12 +51,6 @@ public class PersonPersistencePortImpl implements PersonPersistencePort {
     }
 
     @Override
-    public PersonDomain update(PersonDomain personDomain) {
-        PersonEntity personEntity = personJpaRepository.save(modelMapper.map(personDomain, PersonEntity.class));
-        return modelMapper.map(personEntity, PersonDomain.class);
-    }
-
-    @Override
     public void delete(PersonDomain personDomain) {
         personJpaRepository.delete(modelMapper.map(personDomain, PersonEntity.class));
     }

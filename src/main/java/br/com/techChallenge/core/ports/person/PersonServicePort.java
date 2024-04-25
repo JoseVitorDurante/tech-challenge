@@ -16,9 +16,7 @@ public interface PersonServicePort {
 
     Optional<PersonDomain> findByCpf(String cpf);
 
-    PersonDomain update(PersonDomain personDomain);
+    PersonDomain update(PersonDomain updatePersonDomain);
 
     void delete(PersonDomain personDomain);
-
-
 }

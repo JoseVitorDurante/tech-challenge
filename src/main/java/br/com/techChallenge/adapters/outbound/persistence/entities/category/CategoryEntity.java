@@ -1,7 +1,7 @@
-package br.com.techChallenge.adapters.outbound.persistence.entities.person;
+package br.com.techChallenge.adapters.outbound.persistence.entities.category;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
@@ -14,12 +14,12 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Entity(name = "persons")
+@Entity(name = "categories")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PersonEntity implements Serializable {
+public class CategoryEntity implements Serializable {
 
     @Id
     @UuidGenerator
@@ -28,9 +28,4 @@ public class PersonEntity implements Serializable {
     @NotNull
     @Column(nullable = false)
     private String name;
-
-    @CPF
-    @NotNull
-    @Column(length = 12, unique = true, nullable = false)
-    private String cpf;
 }

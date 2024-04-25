@@ -1,23 +1,24 @@
-package br.com.techChallenge.adapters.dtos.person;
+package br.com.techChallenge.adapters.dtos.product;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonDto {
-
-    private UUID id;
+public class ProductInputDTO {
 
     @NotNull
-    private String nome;
+    private String name;
 
-    @CPF
-    private String cpf;
+    @NotNull
+    private BigDecimal price;
+
+    @NotNull
+    private UUID idCategory;
 }
