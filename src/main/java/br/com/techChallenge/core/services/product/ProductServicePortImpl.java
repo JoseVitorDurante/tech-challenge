@@ -1,9 +1,9 @@
 package br.com.techChallenge.core.services.product;
 
-import br.com.techChallenge.core.domain.category.CategoryDomain;
 import br.com.techChallenge.core.domain.product.ProductDomain;
 import br.com.techChallenge.core.exceptions.category.CategoryNotFound;
 import br.com.techChallenge.core.exceptions.person.PersonNotFound;
+import br.com.techChallenge.core.exceptions.product.ProductInvalidPrice;
 import br.com.techChallenge.core.exceptions.product.ProductNotFound;
 import br.com.techChallenge.core.ports.category.CategoryPersistencePort;
 import br.com.techChallenge.core.ports.product.ProductPersistencePort;
@@ -11,6 +11,7 @@ import br.com.techChallenge.core.ports.product.ProductServicePort;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +48,10 @@ public class ProductServicePortImpl implements ProductServicePort {
     public ProductDomain save(ProductDomain productDomain) {
         categoryPersistencePort.findById(productDomain.getIdCategory())
                 .orElseThrow(CategoryNotFound::new);
+
+        if (productDomain.getPrice().compareTo(BigDecimal.ZERO) <= 0)
+            throw new ProductInvalidPrice();
+
 
         return productPersistencePort.save(productDomain);
     }

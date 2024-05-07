@@ -14,6 +14,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      #      ddl-auto: create #toda a vez que subir vai limpar o banco so para teste
       dialect: org.hibernate.dialect.MySQL8Dialect
       jdbc:
         lob.non-contextual-creation: true
