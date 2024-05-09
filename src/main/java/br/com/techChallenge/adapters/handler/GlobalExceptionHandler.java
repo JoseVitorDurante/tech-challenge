@@ -17,10 +17,13 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private static final String MESSAGE = "message";
+    private static final String ERRORS = "message";
+
     @ExceptionHandler(ExistProductInCategory.class)
     public ResponseEntity<Object> handleExistProductInCategory(ExistProductInCategory ex) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", ex.getMessage());
+        body.put(MESSAGE, ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -28,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(PersonInOrderNotFound.class)
     public ResponseEntity<Object> handlePersonInOrderNotFound(PersonInOrderNotFound ex) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", ex.getMessage());
+        body.put(MESSAGE, ex.getMessage());
         body.put("redirect", "/person");
 
         return new ResponseEntity<>(body, HttpStatus.FOUND);
@@ -37,7 +40,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ProductInOrderNotFound.class)
     public ResponseEntity<Object> handleProductInOrderNotFound(ProductInOrderNotFound ex) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", ex.getMessage());
+        body.put(MESSAGE, ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.FOUND);
     }
@@ -45,13 +48,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", "Invalid request content.");
+        body.put(MESSAGE, "Invalid request content.");
 
         List<String> errors = ex.getConstraintViolations().stream()
                 .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
                 .toList();
 
-        body.put("errors", errors);
+        body.put(ERRORS, errors);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
