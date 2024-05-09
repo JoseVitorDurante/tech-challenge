@@ -31,7 +31,7 @@ public class ProductController {
     }
 
     @GetMapping("/category/{idCategory}")
-    public ResponseEntity<List<ProductDTO>> getByIdCategoria(@PathVariable UUID idCategory) {
+    public ResponseEntity<List<ProductDTO>> getByIdCategory(@PathVariable UUID idCategory) {
         List<ProductDomain> allByCategory = productServicePort.findAllByCategory(idCategory);
 
         List<ProductDTO> allProductDTOS = allByCategory.stream()
