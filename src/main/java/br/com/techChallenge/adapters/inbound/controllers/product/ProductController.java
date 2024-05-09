@@ -4,6 +4,7 @@ import br.com.techChallenge.adapters.dtos.product.ProductDTO;
 import br.com.techChallenge.adapters.dtos.product.ProductInputDTO;
 import br.com.techChallenge.core.domain.product.ProductDomain;
 import br.com.techChallenge.core.ports.product.ProductServicePort;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -59,7 +60,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> save(@RequestBody ProductInputDTO productInputDTO) {
+    public ResponseEntity<ProductDTO> save(@RequestBody @Valid ProductInputDTO productInputDTO) {
         ProductDomain domain = modelMapper.map(productInputDTO, ProductDomain.class);
         ProductDomain savedPessoa = productServicePort.save(domain);
         ProductDTO dto = modelMapper.map(savedPessoa, ProductDTO.class);
