@@ -1,5 +1,6 @@
 package br.com.techChallenge.adapters.dtos.person;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +12,10 @@ import org.hibernate.validator.constraints.br.CPF;
 @AllArgsConstructor
 public class PersonInputDTO {
 
-    @NotNull
+    @NotBlank
     private String name;
 
     @CPF
+    @NotNull
     private String cpf;
 }
