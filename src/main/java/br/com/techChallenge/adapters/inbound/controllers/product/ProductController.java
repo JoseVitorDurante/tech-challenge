@@ -25,8 +25,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getById(@PathVariable UUID id) {
-        ProductDomain ProductDomain = productServicePort.findById(id);
-        ProductDTO productDto = modelMapper.map(ProductDomain, ProductDTO.class);
+        ProductDomain productDomain = productServicePort.findById(id);
+        ProductDTO productDto = modelMapper.map(productDomain, ProductDTO.class);
         return ResponseEntity.ok(productDto);
     }
 
