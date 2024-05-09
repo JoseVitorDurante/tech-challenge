@@ -25,8 +25,8 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getById(@PathVariable UUID id) {
-        CategoryDomain CategoryDomain = categoryServicePort.findById(id);
-        CategoryDTO categoryDto = modelMapper.map(CategoryDomain, CategoryDTO.class);
+        CategoryDomain categoryDomain = categoryServicePort.findById(id);
+        CategoryDTO categoryDto = modelMapper.map(categoryDomain, CategoryDTO.class);
         return ResponseEntity.ok(categoryDto);
     }
 
