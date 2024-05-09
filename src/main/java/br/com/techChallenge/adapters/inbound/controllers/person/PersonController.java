@@ -4,6 +4,7 @@ import br.com.techChallenge.adapters.dtos.person.PersonDTO;
 import br.com.techChallenge.adapters.dtos.person.PersonInputDTO;
 import br.com.techChallenge.core.domain.person.PersonDomain;
 import br.com.techChallenge.core.ports.person.PersonServicePort;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -58,7 +59,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonDTO> save(@RequestBody PersonInputDTO personInputDTO) {
+    public ResponseEntity<PersonDTO> save(@RequestBody @Valid PersonInputDTO personInputDTO) {
         PersonDomain domain = modelMapper.map(personInputDTO, PersonDomain.class);
         PersonDomain savedPessoa = personServicePort.save(domain);
         PersonDTO dto = modelMapper.map(savedPessoa, PersonDTO.class);
