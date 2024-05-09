@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/pessoa")
+@RequestMapping("/person")
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class PersonController {
