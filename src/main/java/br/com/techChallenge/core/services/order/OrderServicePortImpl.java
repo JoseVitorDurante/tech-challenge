@@ -60,7 +60,7 @@ public class OrderServicePortImpl implements OrderServicePort {
 
         calculateTotal(orderDomain);
 
-        orderDomain.setStatus(StatusOrder.INICIALIZED);
+        orderDomain.setStatus(StatusOrder.INITIALIZED);
 
         OrderDomain save = orderPersistencePort.save(orderDomain);
 
@@ -107,7 +107,7 @@ public class OrderServicePortImpl implements OrderServicePort {
             orderDomain.setIdPerson(validatedExistPersonOrException(cpf).getId());
         }
 
-        orderDomain.setStatus(StatusOrder.INICIALIZED);
+        orderDomain.setStatus(StatusOrder.INITIALIZED);
 
         calculateTotal(orderDomain);
 
