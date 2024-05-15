@@ -20,11 +20,11 @@ ARG ADDITIONAL_OPTS
 ENV PROFILE=${PROFILE}
 ENV ADDITIONAL_OPTS=${ADDITIONAL_OPTS}
 
-WORKDIR /opt/TECH_CHALLENGE
+WORKDIR /opt/tech-challenge
 
-COPY --from=build /usr/src/app/target/TECH_CHALLENGE*.jar TECH_CHALLENGE.jar
+COPY --from=build /usr/src/app/target/tech-challenge*.jar tech-challenge.jar
 
-EXPOSE 5009
+EXPOSE 5006
 EXPOSE 8084
 
-CMD java ${ADDITIONAL_OPTS} -jar LOJA.jar --spring.profiles.active=${PROFILE}
+CMD java ${ADDITIONAL_OPTS} -jar tech-challenge.jar --spring.profiles.active=${PROFILE}

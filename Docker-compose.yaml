@@ -1,9 +1,30 @@
 # Comando para executar: docker compose up --build --force-recreate
 version: '3.7'
 
+networks:
+  tech-challenge-network:
+    driver: bridge
+
 services:
 
   ##############################################
+  tech-challenge-service:
+    container_name: tech-challenge
+    image: tech-challenge
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+      - '5006:5006'
+    environment:
+      PROFILE: AMBIENTEDOCKERLOCAL
+      DB_HOST: db_tech_challenge
+      DB_PORT: 3306
+      ADDITIONAL_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+    depends_on:
+      - db_tech_challenge
+
   db_tech_challenge:
     container_name: db_tech_challenge
     image: 'mysql:8.0.29-debian'

@@ -8,7 +8,7 @@ spring:
   application:
     name: tech-challenge-service
   datasource:
-    url: jdbc:mysql://localhost:3306/tech-challenge?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/tech-challenge?createDatabaseIfNotExist=true
     username: root
     password: root
   jpa:

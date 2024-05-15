@@ -13,8 +13,8 @@
     <groupId>br.com.tech_challenge</groupId>
     <artifactId>tech-challenge</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>TECH_CHALLENGE</name>
-    <description>TECH_CHALLENGE</description>
+    <name>tech-challenge</name>
+    <description>tech-challenge</description>
 
     <properties>
         <java.version>21</java.version>
