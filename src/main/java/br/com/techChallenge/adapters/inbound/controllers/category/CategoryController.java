@@ -4,6 +4,7 @@ import br.com.techChallenge.adapters.dtos.category.CategoryDTO;
 import br.com.techChallenge.adapters.dtos.category.CategoryInputDTO;
 import br.com.techChallenge.core.domain.category.CategoryDomain;
 import br.com.techChallenge.core.ports.category.CategoryServicePort;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,15 @@ public class CategoryController {
     final CategoryServicePort categoryServicePort;
     final ModelMapper modelMapper;
 
+    @Operation(summary = "Get a category by id")
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getById(@PathVariable UUID id) {
-        CategoryDomain CategoryDomain = categoryServicePort.findById(id);
-        CategoryDTO categoryDto = modelMapper.map(CategoryDomain, CategoryDTO.class);
+        CategoryDomain categoryDomain = categoryServicePort.findById(id);
+        CategoryDTO categoryDto = modelMapper.map(categoryDomain, CategoryDTO.class);
         return ResponseEntity.ok(categoryDto);
     }
 
+    @Operation(summary = "Get all categories")
     @GetMapping("/all")
     public ResponseEntity<List<CategoryDTO>> getAll() {
         List<CategoryDomain> allCategories = categoryServicePort.findAll();
@@ -44,6 +47,7 @@ public class CategoryController {
         return ResponseEntity.ok(allCategoryDTOS);
     }
 
+    @Operation(summary = "Create a new category")
     @PostMapping
     public ResponseEntity<CategoryDTO> save(@RequestBody CategoryInputDTO categoryInputDTO) {
         CategoryDomain domain = modelMapper.map(categoryInputDTO, CategoryDomain.class);
@@ -52,6 +56,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    @Operation(summary = "Update a category by id")
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> update(@PathVariable UUID id, @RequestBody CategoryInputDTO categoryInputDTO) {
         CategoryDomain domain = modelMapper.map(categoryInputDTO, CategoryDomain.class);
@@ -62,6 +67,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
+    @Operation(summary = "Delete a category by id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         CategoryDomain domain = new CategoryDomain();

@@ -6,6 +6,7 @@ import br.com.techChallenge.core.domain.order.OrderDomain;
 import br.com.techChallenge.core.domain.order.enums.StatusOrder;
 import br.com.techChallenge.core.domain.order.item.OrderItemDomain;
 import br.com.techChallenge.core.ports.order.OrderServicePort;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class OrderController {
     final OrderServicePort orderServicePort;
     final ModelMapper modelMapper;
 
+    @Operation(summary = "Get a order by id")
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getById(@PathVariable UUID id) {
         OrderDomain orderDomain = orderServicePort.findById(id);
@@ -32,6 +34,7 @@ public class OrderController {
         return ResponseEntity.ok(orderResponse);
     }
 
+    @Operation(summary = "Get orders by CPF")
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<List<OrderResponse>> getByCpf(@PathVariable String cpf) {
         List<OrderDomain> orderDomains = orderServicePort.findByCpf(cpf);
@@ -45,6 +48,7 @@ public class OrderController {
         return ResponseEntity.ok(orderResponses);
     }
 
+    @Operation(summary = "Get all orders")
     @GetMapping("/all")
     public ResponseEntity<List<OrderResponse>> getAll() {
         List<OrderDomain> orderDomains = orderServicePort.findAll();
@@ -58,6 +62,7 @@ public class OrderController {
         return ResponseEntity.ok(orderResponses);
     }
 
+    @Operation(summary = "Create a new order")
     @PostMapping("/create")
     public ResponseEntity<OrderResponse> save(@RequestBody OrderRequest orderRequest) {
         OrderDomain orderDomain = convertToOrderDomain(orderRequest);
@@ -67,6 +72,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseSaved);
     }
 
+    @Operation(summary = "Update a order by id")
     @PutMapping("/update/{id}")
     public ResponseEntity<OrderResponse> update(@PathVariable UUID id, @RequestBody OrderRequest orderRequest) {
         OrderDomain orderDomain = convertToOrderDomain(orderRequest);
@@ -76,6 +82,7 @@ public class OrderController {
         return ResponseEntity.ok(orderResponseUpdated);
     }
 
+    @Operation(summary = "Update order status")
     @PutMapping("/status/{id}")
     public ResponseEntity<Void> updateStatus(@PathVariable UUID id, @RequestParam StatusOrder status) {
         orderServicePort.updateStatus(id, status);
