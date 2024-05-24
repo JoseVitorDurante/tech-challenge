@@ -14,5 +14,5 @@ public class OrderRequest {
 
     private List<OrderItemRequest> items = new ArrayList<>();
 
-    private PersonRequest person;
+    private CustomerRequest customer;
 }

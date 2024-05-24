@@ -1,4 +1,4 @@
-package br.com.techChallenge.adapters.outbound.persistence.entities.person;
+package br.com.techChallenge.adapters.outbound.persistence.entities.customer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
@@ -14,12 +14,12 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Entity(name = "persons")
+@Entity(name = "customers")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PersonEntity implements Serializable {
+public class CustomerEntity implements Serializable {
 
     @Id
     @UuidGenerator
@@ -28,6 +28,10 @@ public class PersonEntity implements Serializable {
     @NotNull
     @Column(nullable = false)
     private String name;
+
+    @NotNull
+    @Column(nullable = false)
+    private String email;
 
     @CPF
     @NotNull

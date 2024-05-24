@@ -10,6 +10,8 @@ O projeto utiliza o framework Spring Boot para a criação da aplicação e o Hi
 
 O projeto foi desenvolvido utilizando Java 21 e Maven 3.8.6. O banco de dados utilizado é MySQL.
 
+É possível visualizar o Event Storming da solução pela ferramenta Miro atraves do link [Fast Food Event Storming](https://miro.com/app/board/uXjVKPW0siQ=/).
+
 ### Arquitetura Hexagonal
 
 A arquitetura Hexagonal, também conhecida como Ports and Adapters, é um padrão de design de software que promove a separação de preocupações. Ela divide o sistema em três partes principais:

@@ -1,7 +1,7 @@
 package br.com.techChallenge.adapters.handler;
 
 import br.com.techChallenge.core.exceptions.category.ExistProductInCategory;
-import br.com.techChallenge.core.exceptions.order.PersonInOrderNotFound;
+import br.com.techChallenge.core.exceptions.order.CustomerInOrderNotFound;
 import br.com.techChallenge.core.exceptions.order.ProductInOrderNotFound;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
@@ -32,11 +32,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PersonInOrderNotFound.class)
-    public ResponseEntity<Object> handlePersonInOrderNotFound(PersonInOrderNotFound ex) {
+    @ExceptionHandler(CustomerInOrderNotFound.class)
+    public ResponseEntity<Object> handleCustomerInOrderNotFound(CustomerInOrderNotFound ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(MESSAGE, ex.getMessage());
-        body.put("redirect", "/person");
+        body.put("redirect", "/customer");
 
         return new ResponseEntity<>(body, HttpStatus.FOUND);
     }

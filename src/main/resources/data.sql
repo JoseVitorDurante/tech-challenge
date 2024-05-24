@@ -1,7 +1,7 @@
 INSERT
     ignore
-INTO `persons` (`id`, `name`, `cpf`)
-VALUES ('fac9e733-5d52-4918-a2f1-e2fc6a7487f1', 'Jose Vitor', '58743120059');
+INTO `customers` (`id`, `name`, `email`, `cpf`)
+VALUES ('fac9e733-5d52-4918-a2f1-e2fc6a7487f1', 'Jose Vitor', 'jose.vitor@getnada.com', '58743120059');
 
 INSERT
     ignore

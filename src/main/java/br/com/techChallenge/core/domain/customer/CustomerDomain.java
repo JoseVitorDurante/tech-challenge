@@ -1,4 +1,4 @@
-package br.com.techChallenge.core.domain.person;
+package br.com.techChallenge.core.domain.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,9 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonDomain {
+public class CustomerDomain {
     private UUID id;
     private String name;
+    private String email;
     private String cpf;
 }

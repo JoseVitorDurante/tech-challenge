@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum StatusOrder {
-    INITIALIZED("Iniciado"),
-    IN_PROGRESS("Em progresso"),
+    RECEIVED("Recebido"),
+    IN_PREPARATION("Em preparação"),
     READY_FOR_PICKUP("Pronto para retirada"),
     OUT_FOR_DELIVERY("Saiu para entrega"),
-    DELIVERED("Entregue"),
+    FINISHED("Finalizado"),
     CANCELED("Cancelado");
 
     private final String description;

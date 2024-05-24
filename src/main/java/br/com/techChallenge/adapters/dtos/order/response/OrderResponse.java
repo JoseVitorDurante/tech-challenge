@@ -34,7 +34,7 @@ public class OrderResponse {
     private BigDecimal total;
 
     @Schema(description = "Customer ID", example = "66b523b6-5d3f-4a94-9eed-249f5e287847")
-    private String idPerson;
+    private String idCustomer;
 
     @Schema(description = "05385157830")
     private String cpf;

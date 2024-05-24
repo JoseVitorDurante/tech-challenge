@@ -3,17 +3,17 @@ package br.com.techChallenge.core.services.order;
 import br.com.techChallenge.core.domain.order.OrderDomain;
 import br.com.techChallenge.core.domain.order.enums.StatusOrder;
 import br.com.techChallenge.core.domain.order.item.OrderItemDomain;
-import br.com.techChallenge.core.domain.person.PersonDomain;
+import br.com.techChallenge.core.domain.customer.CustomerDomain;
 import br.com.techChallenge.core.exceptions.order.EmptyOrderItems;
 import br.com.techChallenge.core.exceptions.order.OrderNotFound;
-import br.com.techChallenge.core.exceptions.order.PersonInOrderNotFound;
+import br.com.techChallenge.core.exceptions.order.CustomerInOrderNotFound;
 import br.com.techChallenge.core.exceptions.order.ProductInOrderNotFound;
 import br.com.techChallenge.core.exceptions.order.item.EmptyQuantityItems;
 import br.com.techChallenge.core.exceptions.product.ProductNotFound;
 import br.com.techChallenge.core.ports.order.OrderPersistencePort;
 import br.com.techChallenge.core.ports.order.OrderServicePort;
 import br.com.techChallenge.core.ports.order.item.OrderItemPersistencePort;
-import br.com.techChallenge.core.ports.person.PersonPersistencePort;
+import br.com.techChallenge.core.ports.customer.CustomerPersistencePort;
 import br.com.techChallenge.core.ports.product.ProductPersistencePort;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -31,7 +31,7 @@ public class OrderServicePortImpl implements OrderServicePort {
 
     final ProductPersistencePort productPersistencePort;
 
-    final PersonPersistencePort personPersistencePort;
+    final CustomerPersistencePort customerPersistencePort;
 
     final OrderItemPersistencePort orderItemPersistencePort;
 
@@ -55,12 +55,14 @@ public class OrderServicePortImpl implements OrderServicePort {
         validatedItemOrException(orderDomain.getItems());
 
         if (cpf != null) {
-            orderDomain.setIdPerson(validatedExistPersonOrException(cpf).getId());
+            CustomerDomain customerDomain = validatedExisCustomerOrException(cpf);
+            orderDomain.setIdCustomer(customerDomain.getId());
+            orderDomain.setCustomer(customerDomain);
         }
 
         calculateTotal(orderDomain);
 
-        orderDomain.setStatus(StatusOrder.INITIALIZED);
+        orderDomain.setStatus(StatusOrder.RECEIVED);
 
         OrderDomain save = orderPersistencePort.save(orderDomain);
 
@@ -104,10 +106,12 @@ public class OrderServicePortImpl implements OrderServicePort {
         });
 
         if (cpf != null) {
-            orderDomain.setIdPerson(validatedExistPersonOrException(cpf).getId());
+            CustomerDomain customerDomain = validatedExisCustomerOrException(cpf);
+            orderDomain.setIdCustomer(customerDomain.getId());
+            orderDomain.setCustomer(customerDomain);
         }
 
-        orderDomain.setStatus(StatusOrder.INITIALIZED);
+        orderDomain.setStatus(StatusOrder.RECEIVED);
 
         calculateTotal(orderDomain);
 
@@ -137,18 +141,18 @@ public class OrderServicePortImpl implements OrderServicePort {
 
     @Override
     public List<OrderDomain> findByCpf(String cpf) {
-        PersonDomain personDomain = validatedExistPersonOrException(cpf);
-        return orderPersistencePort.findByIdPerson(personDomain.getId());
+        CustomerDomain customerDomain = validatedExisCustomerOrException(cpf);
+        return orderPersistencePort.findByIdCustomer(customerDomain.getId());
     }
 
-    private PersonDomain validatedExistPersonOrException(String cpf) {
-        return personPersistencePort.findByCpf(cpf)
-                .orElseThrow(() -> new PersonInOrderNotFound("Person with cpf " + cpf + " not found"));
+    private CustomerDomain validatedExisCustomerOrException(String cpf) {
+        return customerPersistencePort.findByCpf(cpf)
+                .orElseThrow(() -> new CustomerInOrderNotFound("Customer with cpf " + cpf + " not found"));
     }
 
     private void validatedItemOrException(List<OrderItemDomain> items) {
         items.forEach(item -> productPersistencePort.findById(item.getIdProduct())
-                .orElseThrow(() -> new ProductInOrderNotFound("Order with id " + item.getIdProduct() + " not found")));
+                .orElseThrow(() -> new ProductInOrderNotFound("Product with id " + item.getIdProduct() + " not found")));
     }
 
     private static void validatedQuantityItems(List<OrderItemDomain> items) {

@@ -2,7 +2,7 @@ package br.com.techChallenge.adapters.outbound.persistence.entities.order;
 
 import br.com.techChallenge.adapters.outbound.persistence.entities.order.enums.StatusOrder;
 import br.com.techChallenge.adapters.outbound.persistence.entities.order.item.OrderItemEntity;
-import br.com.techChallenge.adapters.outbound.persistence.entities.person.PersonEntity;
+import br.com.techChallenge.adapters.outbound.persistence.entities.customer.CustomerEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -45,12 +45,12 @@ public class OrderEntity {
 
     // ---------------------------------------- RELACIONAMENTOS ----------------------------------
 
-    @Column(name = "ID_PERSON", nullable = true)
-    private UUID idPerson;
+    @Column(name = "ID_CUSTOMER", nullable = true)
+    private UUID idCustomer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_PERSON", referencedColumnName = "ID", insertable = false, updatable = false)
-    private PersonEntity person;
+    @JoinColumn(name = "ID_CUSTOMER", referencedColumnName = "ID", insertable = false, updatable = false)
+    private CustomerEntity customer;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItemEntity> items = new ArrayList<>();

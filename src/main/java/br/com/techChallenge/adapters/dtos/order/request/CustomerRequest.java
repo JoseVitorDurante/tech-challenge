@@ -11,12 +11,7 @@ import org.hibernate.validator.constraints.br.CPF;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonRequest {
-
-    @Schema(description = "Email address", example = "carolina.herrera@icloud.com")
-    @Email
-    @Size(min = 3, max = 80)
-    private String email;
+public class CustomerRequest {
 
     @Schema(description = "CPF number", example = "05385157830")
     @CPF

@@ -2,7 +2,7 @@ package br.com.techChallenge.core.services.product;
 
 import br.com.techChallenge.core.domain.product.ProductDomain;
 import br.com.techChallenge.core.exceptions.category.CategoryNotFound;
-import br.com.techChallenge.core.exceptions.person.PersonNotFound;
+import br.com.techChallenge.core.exceptions.customer.CustomerNotFound;
 import br.com.techChallenge.core.exceptions.product.ProductInvalidPrice;
 import br.com.techChallenge.core.exceptions.product.ProductNotFound;
 import br.com.techChallenge.core.ports.category.CategoryPersistencePort;
@@ -59,7 +59,7 @@ public class ProductServicePortImpl implements ProductServicePort {
     @Override
     public ProductDomain update(ProductDomain updateProductDomain) {
         ProductDomain domain = productPersistencePort.findById(updateProductDomain.getId())
-                .orElseThrow(PersonNotFound::new);
+                .orElseThrow(CustomerNotFound::new);
 
         modelMapper.map(updateProductDomain, domain);
 

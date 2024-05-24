@@ -31,6 +31,9 @@ public class OrderController {
     public ResponseEntity<OrderResponse> getById(@PathVariable UUID id) {
         OrderDomain orderDomain = orderServicePort.findById(id);
         OrderResponse orderResponse = modelMapper.map(orderDomain, OrderResponse.class);
+        if (orderDomain.getCustomer() != null) {
+            orderResponse.setCpf(orderDomain.getCustomer().getCpf());
+        }
         return ResponseEntity.ok(orderResponse);
     }
 
@@ -39,7 +42,14 @@ public class OrderController {
     public ResponseEntity<List<OrderResponse>> getByCpf(@PathVariable String cpf) {
         List<OrderDomain> orderDomains = orderServicePort.findByCpf(cpf);
         List<OrderResponse> orderResponses = orderDomains.stream()
-                .map(orderDomain -> modelMapper.map(orderDomain, OrderResponse.class))
+                .map(orderDomain -> {
+                    OrderResponse map = modelMapper.map(orderDomain, OrderResponse.class);
+                    if (orderDomain.getCustomer() != null) {
+                        map.setCpf(orderDomain.getCustomer().getCpf());
+                    }
+
+                    return map;
+                })
                 .collect(Collectors.toList());
 
         if (orderResponses.isEmpty())
@@ -53,7 +63,14 @@ public class OrderController {
     public ResponseEntity<List<OrderResponse>> getAll() {
         List<OrderDomain> orderDomains = orderServicePort.findAll();
         List<OrderResponse> orderResponses = orderDomains.stream()
-                .map(orderDomain -> modelMapper.map(orderDomain, OrderResponse.class))
+                .map(orderDomain -> {
+                    OrderResponse map = modelMapper.map(orderDomain, OrderResponse.class);
+                    if (orderDomain.getCustomer() != null) {
+                        map.setCpf(orderDomain.getCustomer().getCpf());
+                    }
+
+                    return map;
+                })
                 .collect(Collectors.toList());
 
         if (orderResponses.isEmpty())
@@ -67,8 +84,11 @@ public class OrderController {
     public ResponseEntity<OrderResponse> save(@RequestBody OrderRequest orderRequest) {
         OrderDomain orderDomain = convertToOrderDomain(orderRequest);
 
-        OrderDomain orderDomainSaved = orderServicePort.save(orderDomain, orderRequest.getPerson() != null ? orderRequest.getPerson().getCpf() : null);
+        OrderDomain orderDomainSaved = orderServicePort.save(orderDomain, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null);
         OrderResponse orderResponseSaved = modelMapper.map(orderDomainSaved, OrderResponse.class);
+        if (orderDomain.getCustomer() != null) {
+            orderResponseSaved.setCpf(orderDomain.getCustomer().getCpf());
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseSaved);
     }
 
@@ -77,8 +97,11 @@ public class OrderController {
     public ResponseEntity<OrderResponse> update(@PathVariable UUID id, @RequestBody OrderRequest orderRequest) {
         OrderDomain orderDomain = convertToOrderDomain(orderRequest);
 
-        OrderDomain orderDomainUpdated = orderServicePort.update(id, orderRequest.getPerson() != null ? orderRequest.getPerson().getCpf() : null, orderDomain.getItems());
+        OrderDomain orderDomainUpdated = orderServicePort.update(id, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null, orderDomain.getItems());
         OrderResponse orderResponseUpdated = modelMapper.map(orderDomainUpdated, OrderResponse.class);
+        if (orderDomainUpdated.getCustomer() != null) {
+            orderResponseUpdated.setCpf(orderDomainUpdated.getCustomer().getCpf());
+        }
         return ResponseEntity.ok(orderResponseUpdated);
     }
 
@@ -96,6 +119,7 @@ public class OrderController {
                     OrderItemDomain orderItemDomain = new OrderItemDomain();
                     orderItemDomain.setIdProduct(item.getIdProduct());
                     orderItemDomain.setQuantity(item.getQuantity());
+                    orderItemDomain.setObservation(item.getObservation());
                     return orderItemDomain;
                 })
                 .collect(Collectors.toList()));

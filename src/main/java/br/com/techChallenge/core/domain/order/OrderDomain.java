@@ -2,7 +2,7 @@ package br.com.techChallenge.core.domain.order;
 
 import br.com.techChallenge.core.domain.order.enums.StatusOrder;
 import br.com.techChallenge.core.domain.order.item.OrderItemDomain;
-import br.com.techChallenge.core.domain.person.PersonDomain;
+import br.com.techChallenge.core.domain.customer.CustomerDomain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,9 +24,9 @@ public class OrderDomain {
 
     private BigDecimal total;
 
-    private UUID idPerson;
+    private UUID idCustomer;
 
-    private PersonDomain person;
+    private CustomerDomain customer;
 
     private LocalDateTime createdAt;
 
