@@ -1,19 +1,21 @@
 package br.com.techChallenge.core.services.order;
 
+import br.com.techChallenge.core.domain.customer.CustomerDomain;
 import br.com.techChallenge.core.domain.order.OrderDomain;
 import br.com.techChallenge.core.domain.order.enums.StatusOrder;
 import br.com.techChallenge.core.domain.order.item.OrderItemDomain;
-import br.com.techChallenge.core.domain.customer.CustomerDomain;
-import br.com.techChallenge.core.exceptions.order.EmptyOrderItems;
-import br.com.techChallenge.core.exceptions.order.OrderNotFound;
-import br.com.techChallenge.core.exceptions.order.CustomerInOrderNotFound;
-import br.com.techChallenge.core.exceptions.order.ProductInOrderNotFound;
+import br.com.techChallenge.core.domain.payment.PaymentDomain;
+import br.com.techChallenge.core.domain.payment.enums.PaymentStatus;
+import br.com.techChallenge.core.domain.payment.enums.PaymentType;
+import br.com.techChallenge.core.exceptions.order.*;
 import br.com.techChallenge.core.exceptions.order.item.EmptyQuantityItems;
 import br.com.techChallenge.core.exceptions.product.ProductNotFound;
+import br.com.techChallenge.core.ports.customer.CustomerPersistencePort;
 import br.com.techChallenge.core.ports.order.OrderPersistencePort;
 import br.com.techChallenge.core.ports.order.OrderServicePort;
 import br.com.techChallenge.core.ports.order.item.OrderItemPersistencePort;
-import br.com.techChallenge.core.ports.customer.CustomerPersistencePort;
+import br.com.techChallenge.core.ports.payment.PaymentPersistencePort;
+import br.com.techChallenge.core.ports.payment.PaymentServicePort;
 import br.com.techChallenge.core.ports.product.ProductPersistencePort;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -34,6 +36,10 @@ public class OrderServicePortImpl implements OrderServicePort {
     final CustomerPersistencePort customerPersistencePort;
 
     final OrderItemPersistencePort orderItemPersistencePort;
+
+    final PaymentServicePort paymentServicePort;
+
+    final PaymentPersistencePort paymentPersistencePort;
 
     final ModelMapper modelMapper;
 
@@ -64,21 +70,24 @@ public class OrderServicePortImpl implements OrderServicePort {
 
         orderDomain.setStatus(StatusOrder.RECEIVED);
 
-        OrderDomain save = orderPersistencePort.save(orderDomain);
+        OrderDomain orderDomainSave = orderPersistencePort.save(orderDomain);
 
         List<OrderItemDomain> savedItems = orderDomain.getItems().stream()
                 .map(item -> {
-                    item.setIdOrder(save.getId());
-                    item.setOrder(save);
+                    item.setIdOrder(orderDomainSave.getId());
+                    item.setOrder(orderDomainSave);
                     return orderItemPersistencePort.save(item);
                 })
                 .collect(Collectors.toList());
 
-        save.setItems(savedItems);
-        return orderPersistencePort.save(save);
+        orderDomainSave.setItems(savedItems);
+
+        PaymentDomain payment = paymentServicePort.createPayment(orderDomainSave, PaymentType.MERCADO_PAGO);
+        orderDomainSave.setPayment(payment);
+
+        return orderPersistencePort.save(orderDomainSave);
     }
 
-    @Override
     public void calculateTotal(OrderDomain orderDomain) {
         orderDomain.setTotal(orderDomain.getItems().stream()
                 .map(item -> productPersistencePort.findById(item.getIdProduct())
@@ -94,6 +103,8 @@ public class OrderServicePortImpl implements OrderServicePort {
 
         OrderDomain orderDomain = orderPersistencePort.findById(idOrder)
                 .orElseThrow(OrderNotFound::new);
+
+        validatedPayments(orderDomain);
 
         validatedItemOrException(items);
 
@@ -113,20 +124,33 @@ public class OrderServicePortImpl implements OrderServicePort {
 
         orderDomain.setStatus(StatusOrder.RECEIVED);
 
+        UUID oldIdPayment = orderDomain.getPayment().getId();
+
+        orderDomain.setPayment(null);
+
         calculateTotal(orderDomain);
 
-        OrderDomain save = orderPersistencePort.save(orderDomain);
+        OrderDomain orderDomainSave = orderPersistencePort.save(orderDomain);
 
         List<OrderItemDomain> savedItems = orderDomain.getItems().stream()
                 .map(item -> {
-                    item.setIdOrder(save.getId());
-                    item.setOrder(save);
+                    item.setIdOrder(orderDomainSave.getId());
+                    item.setOrder(orderDomainSave);
                     return orderItemPersistencePort.save(item);
                 })
                 .collect(Collectors.toList());
 
-        save.setItems(savedItems);
-        return orderPersistencePort.save(save);
+        orderDomainSave.setItems(savedItems);
+
+        PaymentDomain payment = paymentServicePort.createPayment(orderDomainSave, PaymentType.MERCADO_PAGO);
+        orderDomainSave.setPayment(payment);
+
+        OrderDomain save = orderPersistencePort.save(orderDomainSave);
+
+        paymentPersistencePort.delete(oldIdPayment);
+
+        return save;
+
     }
 
     @Override
@@ -150,9 +174,14 @@ public class OrderServicePortImpl implements OrderServicePort {
                 .orElseThrow(() -> new CustomerInOrderNotFound("Customer with cpf " + cpf + " not found"));
     }
 
+    private void validatedPayments(OrderDomain orderDomain) {
+        if (orderDomain.getPayment() != null && orderDomain.getPayment().getStatus().equals(PaymentStatus.APPROVED))
+            throw new OrderPaymentApproved();
+    }
+
     private void validatedItemOrException(List<OrderItemDomain> items) {
-        items.forEach(item -> productPersistencePort.findById(item.getIdProduct())
-                .orElseThrow(() -> new ProductInOrderNotFound("Product with id " + item.getIdProduct() + " not found")));
+        items.forEach(item -> item.setProduct(productPersistencePort.findById(item.getIdProduct())
+                .orElseThrow(() -> new ProductInOrderNotFound("Product with id " + item.getIdProduct() + " not found"))));
     }
 
     private static void validatedQuantityItems(List<OrderItemDomain> items) {

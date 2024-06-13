@@ -2,6 +2,7 @@ package br.com.techChallenge.adapters.dtos.order.response;
 
 import br.com.techChallenge.adapters.dtos.order.request.OrderItemRequest;
 import br.com.techChallenge.core.domain.order.enums.StatusOrder;
+import br.com.techChallenge.core.domain.payment.enums.PaymentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -38,4 +39,14 @@ public class OrderResponse {
 
     @Schema(description = "05385157830")
     private String cpf;
+
+    @Schema(description = "Payment ID", example = "53c8910e-bbca-4b3a-af66-e35398478d6e")
+    private String idPayment;
+
+    @Schema(description = "qr code de pagamento")
+    private String qrCode;
+
+    @Schema(description = "Status do pagamento", example = "CREATED")
+    private PaymentStatus paymentStatus;
+
 }

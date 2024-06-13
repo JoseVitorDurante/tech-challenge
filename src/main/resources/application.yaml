@@ -14,7 +14,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      #      ddl-auto: create #toda a vez que subir vai limpar o banco so para teste
+      #     ddl-auto: create #toda a vez que subir vai limpar o banco so para teste
       dialect: org.hibernate.dialect.MySQL8Dialect
       jdbc:
         lob.non-contextual-creation: true
@@ -28,6 +28,7 @@ spring:
   sql:
     init:
       mode: always  #colocado para subir data.sql
+
 springdoc:
   api-docs:
     enabled: true
@@ -35,3 +36,9 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+
+mercadopago:
+  url: "https://api.mercadopago.com"
+  userid: 115491705
+  idcaixa: "FIAPFOOD02CAIXA"
+  accesstoken: "Bearer TEST-7092785707123439-053021-f828a5ccadd4d79ecad74ced9b45c70c-115491705"

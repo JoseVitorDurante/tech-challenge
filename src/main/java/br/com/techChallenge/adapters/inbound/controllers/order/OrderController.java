@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     final OrderServicePort orderServicePort;
+
     final ModelMapper modelMapper;
 
     @Operation(summary = "Get a order by id")
@@ -31,9 +32,6 @@ public class OrderController {
     public ResponseEntity<OrderResponse> getById(@PathVariable UUID id) {
         OrderDomain orderDomain = orderServicePort.findById(id);
         OrderResponse orderResponse = modelMapper.map(orderDomain, OrderResponse.class);
-        if (orderDomain.getCustomer() != null) {
-            orderResponse.setCpf(orderDomain.getCustomer().getCpf());
-        }
         return ResponseEntity.ok(orderResponse);
     }
 
@@ -42,14 +40,7 @@ public class OrderController {
     public ResponseEntity<List<OrderResponse>> getByCpf(@PathVariable String cpf) {
         List<OrderDomain> orderDomains = orderServicePort.findByCpf(cpf);
         List<OrderResponse> orderResponses = orderDomains.stream()
-                .map(orderDomain -> {
-                    OrderResponse map = modelMapper.map(orderDomain, OrderResponse.class);
-                    if (orderDomain.getCustomer() != null) {
-                        map.setCpf(orderDomain.getCustomer().getCpf());
-                    }
-
-                    return map;
-                })
+                .map(orderDomain -> modelMapper.map(orderDomain, OrderResponse.class))
                 .collect(Collectors.toList());
 
         if (orderResponses.isEmpty())
@@ -63,14 +54,7 @@ public class OrderController {
     public ResponseEntity<List<OrderResponse>> getAll() {
         List<OrderDomain> orderDomains = orderServicePort.findAll();
         List<OrderResponse> orderResponses = orderDomains.stream()
-                .map(orderDomain -> {
-                    OrderResponse map = modelMapper.map(orderDomain, OrderResponse.class);
-                    if (orderDomain.getCustomer() != null) {
-                        map.setCpf(orderDomain.getCustomer().getCpf());
-                    }
-
-                    return map;
-                })
+                .map(orderDomain -> modelMapper.map(orderDomain, OrderResponse.class))
                 .collect(Collectors.toList());
 
         if (orderResponses.isEmpty())
@@ -86,9 +70,6 @@ public class OrderController {
 
         OrderDomain orderDomainSaved = orderServicePort.save(orderDomain, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null);
         OrderResponse orderResponseSaved = modelMapper.map(orderDomainSaved, OrderResponse.class);
-        if (orderDomain.getCustomer() != null) {
-            orderResponseSaved.setCpf(orderDomain.getCustomer().getCpf());
-        }
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseSaved);
     }
 
@@ -99,9 +80,6 @@ public class OrderController {
 
         OrderDomain orderDomainUpdated = orderServicePort.update(id, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null, orderDomain.getItems());
         OrderResponse orderResponseUpdated = modelMapper.map(orderDomainUpdated, OrderResponse.class);
-        if (orderDomainUpdated.getCustomer() != null) {
-            orderResponseUpdated.setCpf(orderDomainUpdated.getCustomer().getCpf());
-        }
         return ResponseEntity.ok(orderResponseUpdated);
     }
 

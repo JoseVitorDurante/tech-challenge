@@ -17,8 +17,6 @@ public interface OrderServicePort {
 
     OrderDomain update(UUID idOrder, String cpf, List<OrderItemDomain> items);
 
-    void calculateTotal(OrderDomain orderDomain);
-
     void updateStatus(UUID id, StatusOrder status);
 
     List<OrderDomain> findByCpf(String cpf);

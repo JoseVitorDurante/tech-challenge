@@ -1,8 +1,9 @@
 package br.com.techChallenge.adapters.outbound.persistence.entities.order;
 
-import br.com.techChallenge.adapters.outbound.persistence.entities.order.enums.StatusOrder;
-import br.com.techChallenge.adapters.outbound.persistence.entities.order.item.OrderItemEntity;
 import br.com.techChallenge.adapters.outbound.persistence.entities.customer.CustomerEntity;
+import br.com.techChallenge.adapters.outbound.persistence.entities.order.item.OrderItemEntity;
+import br.com.techChallenge.adapters.outbound.persistence.entities.payment.PaymentEntity;
+import br.com.techChallenge.core.domain.order.enums.StatusOrder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -54,4 +55,9 @@ public class OrderEntity {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItemEntity> items = new ArrayList<>();
+
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "payment_entity_id")
+    private PaymentEntity payment;
+
 }
