@@ -17,5 +17,5 @@ public interface ProductServicePort {
 
     ProductDomain update(ProductDomain updateProductDomain);
 
-    void delete(ProductDomain productDomain);
+    void deleteByID(UUID id);
 }

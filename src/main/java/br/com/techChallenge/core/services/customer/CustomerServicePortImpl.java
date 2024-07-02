@@ -1,10 +1,12 @@
 package br.com.techChallenge.core.services.customer;
 
 import br.com.techChallenge.core.domain.customer.CustomerDomain;
-import br.com.techChallenge.core.exceptions.customer.ExistCustomer;
 import br.com.techChallenge.core.exceptions.customer.CustomerNotFound;
+import br.com.techChallenge.core.exceptions.customer.ExistCustomer;
+import br.com.techChallenge.core.exceptions.store.StoreNotFound;
 import br.com.techChallenge.core.ports.customer.CustomerPersistencePort;
 import br.com.techChallenge.core.ports.customer.CustomerServicePort;
+import br.com.techChallenge.core.ports.store.StorePersistencePort;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 
@@ -17,6 +19,8 @@ public class CustomerServicePortImpl implements CustomerServicePort {
 
     final CustomerPersistencePort customerPersistencePort;
 
+    final StorePersistencePort storePersistencePort;
+
     final ModelMapper modelMapper;
 
     @Override
@@ -24,6 +28,9 @@ public class CustomerServicePortImpl implements CustomerServicePort {
         customerPersistencePort.findByCpf(customerDomain.getCpf()).ifPresent(pessoa -> {
             throw new ExistCustomer();
         });
+
+        storePersistencePort.findById(customerDomain.getIdStore())
+                .orElseThrow(StoreNotFound::new);
 
         customerDomain.setCpf(customerDomain.getCpf().replaceAll("[^0-9]", ""));
 
@@ -51,15 +58,18 @@ public class CustomerServicePortImpl implements CustomerServicePort {
         CustomerDomain domain = customerPersistencePort.findById(updateCustomerDomain.getId())
                 .orElseThrow(CustomerNotFound::new);
 
+        storePersistencePort.findById(updateCustomerDomain.getIdStore())
+                .orElseThrow(StoreNotFound::new);
+
         modelMapper.map(updateCustomerDomain, domain);
 
         return customerPersistencePort.save(domain);
     }
 
     @Override
-    public void delete(CustomerDomain customerDomain) {
-        customerPersistencePort.findById(customerDomain.getId())
+    public void deleteByID(UUID id) {
+        customerPersistencePort.findById(id)
                 .orElseThrow(CustomerNotFound::new);
-        customerPersistencePort.delete(customerDomain);
+        customerPersistencePort.deleteByID(id);
     }
 }

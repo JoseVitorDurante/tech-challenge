@@ -9,7 +9,7 @@ public interface PaymentPersistencePort {
 
     PaymentDomain save(PaymentDomain paymentDomain);
 
-    void delete(UUID id);
+    void deleteByID(UUID id);
 
     Optional<PaymentDomain> findById(UUID idPayment);
 }

@@ -25,8 +25,11 @@ public class ProductDTO {
     @NotNull
     private BigDecimal price;
 
-    @Schema(description = "Id of the Category this product belongs to", example = "b51da555-7434-4235-a085-fd5e6e11633d")
+    @Schema(description = "Id of the Category this product belongs to", example = "d8897bbb-868c-4163-b4c8-2e6baf356683")
     @NotNull
     private UUID idCategory;
 
+    @Schema(description = "Store ID", example = "e1defa99-5e85-4b34-906e-145b1f42bd57")
+    @NotNull
+    private String idStore;
 }

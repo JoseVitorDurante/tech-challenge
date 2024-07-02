@@ -29,4 +29,8 @@ public class CustomerDTO {
     @CPF
     private String cpf;
 
+    @Schema(description = "Store ID", example = "e1defa99-5e85-4b34-906e-145b1f42bd57")
+    @NotNull
+    private String idStore;
+
 }

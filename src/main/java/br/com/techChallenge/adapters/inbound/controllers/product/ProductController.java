@@ -87,9 +87,7 @@ public class ProductController {
     @Operation(summary = "Delete a product by id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        ProductDomain domain = new ProductDomain();
-        domain.setId(id);
-        productServicePort.delete(domain);
+        productServicePort.deleteByID(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

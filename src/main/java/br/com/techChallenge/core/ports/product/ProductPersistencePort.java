@@ -10,9 +10,11 @@ public interface ProductPersistencePort {
 
     Optional<ProductDomain> findById(UUID id);
 
+    Optional<ProductDomain> findByIdAndIdStore(UUID idProduct, UUID idStore);
+
     ProductDomain save(ProductDomain productDomain);
 
-    void delete(ProductDomain productDomain);
+    void deleteByID(UUID id);
 
     List<ProductDomain> findAll();
 

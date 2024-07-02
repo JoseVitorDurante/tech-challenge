@@ -5,13 +5,14 @@ import br.com.techChallenge.adapters.dtos.integration.mercadopago.payment.reques
 import br.com.techChallenge.adapters.dtos.integration.mercadopago.payment.request.ItemMercadoPago;
 import br.com.techChallenge.adapters.dtos.integration.mercadopago.payment.request.MercadoPagoRequest;
 import br.com.techChallenge.adapters.dtos.integration.mercadopago.payment.response.MercadoPagoResponse;
+import br.com.techChallenge.adapters.outbound.persistence.entities.store.StoreEntity;
+import br.com.techChallenge.adapters.outbound.persistence.repositories.store.StorePersistencePortImpl;
 import br.com.techChallenge.adapters.utils.DateTimeUtils;
 import br.com.techChallenge.core.domain.payment.enums.PaymentType;
 import br.com.techChallenge.core.dto.payment.PaymentIntegrationOrder;
 import br.com.techChallenge.core.dto.payment.PaymentIntegrationResult;
 import br.com.techChallenge.core.ports.payment.PaymentIntegrationPort;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -22,14 +23,8 @@ public class MercadoPagoIntegrationPortImpl implements PaymentIntegrationPort {
     @Autowired
     private MercadoPagoClient mercadoPagoClient;
 
-    @Value("${mercadopago.accesstoken}")
-    private String accesstoken;
-
-    @Value("${mercadopago.userid}")
-    private int userId;
-
-    @Value("${mercadopago.idcaixa}")
-    private String idCaixa;
+    @Autowired
+    private StorePersistencePortImpl storePersistencePort;
 
     @Override
     public PaymentIntegrationResult processPayment(PaymentIntegrationOrder paymentIntegrationOrder) {
@@ -55,10 +50,12 @@ public class MercadoPagoIntegrationPortImpl implements PaymentIntegrationPort {
             mercadoPagoRequest.getItems().add(itemMercadoPago);
         });
 
+        StoreEntity storeEntity = storePersistencePort.entityfindById(paymentIntegrationOrder.getIdStore());
+
         MercadoPagoResponse mercadoPagoResponse = mercadoPagoClient.createOrder(
-                accesstoken,
-                String.valueOf(userId),
-                idCaixa,
+                "Bearer " + storeEntity.getMercadoPagoGateway().getAccessToken(),
+                storeEntity.getMercadoPagoGateway().getCollectors(),
+                storeEntity.getMercadoPagoGateway().getExternalPos(),
                 mercadoPagoRequest);
 
         return new PaymentIntegrationResult(paymentIntegrationOrder.getOrderPaymentId(),

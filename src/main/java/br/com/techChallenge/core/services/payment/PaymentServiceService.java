@@ -22,9 +22,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PaymentServiceService implements PaymentServicePort {
 
-    final Map<String, PaymentIntegrationPort> paymentIntegrationPorts;
+    final Map<String, PaymentIntegrationPort> paymentIntegrationPorts; //cielo, mercadoPago
 
     final PaymentPersistencePort paymentPersistencePort;
+
 
     @Override
     public PaymentDomain findById(UUID idPayment) {
@@ -50,6 +51,7 @@ public class PaymentServiceService implements PaymentServicePort {
 
 
         PaymentIntegrationOrder paymentIntegrationOrder = new PaymentIntegrationOrder(
+                orderDomain.getStore().getId(),
                 UUID.randomUUID(),
                 orderDomain.getTotal(),
                 item

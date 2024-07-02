@@ -33,8 +33,8 @@ public class CategoryPersistencePortImpl implements CategoryPersistencePort {
     }
 
     @Override
-    public void delete(CategoryDomain categoryDomain) {
-        categoryJpaRepository.delete(modelMapper.map(categoryDomain, CategoryEntity.class));
+    public void deleteByID(UUID id) {
+        categoryJpaRepository.deleteById(id);
     }
 
     @Override

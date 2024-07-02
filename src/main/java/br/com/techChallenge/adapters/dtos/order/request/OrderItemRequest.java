@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderItemRequest {
 
-    @Schema(description = "Product ID", example = "123e4567-e89b-12d3-a456-426614174000")
+    @Schema(description = "Product ID", example = "c1ac8ade-16b6-4ed6-95eb-5ada38ceeab5")
     @NotNull
     private UUID idProduct;
 

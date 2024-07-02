@@ -14,7 +14,7 @@ public interface CustomerPersistencePort {
 
     Optional<CustomerDomain> findByCpf(String cpf);
 
-    void delete(CustomerDomain customerDomain);
+    void deleteByID(UUID id);
 
     List<CustomerDomain> findAll();
 }

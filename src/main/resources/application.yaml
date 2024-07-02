@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
   error:
     include-message: always
 
@@ -8,13 +8,13 @@ spring:
   application:
     name: tech-challenge-service
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/tech-challenge?createDatabaseIfNotExist=true
-    username: root
-    password: root
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/tech-challenge
+    username: postgres
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update
-      #     ddl-auto: create #toda a vez que subir vai limpar o banco so para teste
+      #      ddl-auto: create #toda a vez que subir vai limpar o banco so para teste
       dialect: org.hibernate.dialect.MySQL8Dialect
       jdbc:
         lob.non-contextual-creation: true
@@ -39,6 +39,3 @@ springdoc:
 
 mercadopago:
   url: "https://api.mercadopago.com"
-  userid: 115491705
-  idcaixa: "FIAPFOOD02CAIXA"
-  accesstoken: "Bearer TEST-7092785707123439-053021-f828a5ccadd4d79ecad74ced9b45c70c-115491705"

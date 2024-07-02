@@ -1,5 +1,6 @@
 package br.com.techChallenge.core.domain.customer;
 
+import br.com.techChallenge.core.domain.store.StoreDomain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,6 @@ public class CustomerDomain {
     private String name;
     private String email;
     private String cpf;
+    private UUID idStore;
+    private StoreDomain store;
 }

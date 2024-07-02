@@ -4,9 +4,11 @@ import br.com.techChallenge.core.domain.category.CategoryDomain;
 import br.com.techChallenge.core.domain.product.ProductDomain;
 import br.com.techChallenge.core.exceptions.category.CategoryNotFound;
 import br.com.techChallenge.core.exceptions.category.ExistProductInCategory;
+import br.com.techChallenge.core.exceptions.store.StoreNotFound;
 import br.com.techChallenge.core.ports.category.CategoryPersistencePort;
 import br.com.techChallenge.core.ports.category.CategoryServicePort;
 import br.com.techChallenge.core.ports.product.ProductPersistencePort;
+import br.com.techChallenge.core.ports.store.StorePersistencePort;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 
@@ -20,6 +22,8 @@ public class CategoryServicePortImpl implements CategoryServicePort {
     final CategoryPersistencePort categoryPersistencePort;
 
     final ProductPersistencePort productPersistencePort;
+
+    final StorePersistencePort storePersistencePort;
 
     final ModelMapper modelMapper;
 
@@ -36,6 +40,10 @@ public class CategoryServicePortImpl implements CategoryServicePort {
 
     @Override
     public CategoryDomain save(CategoryDomain categoryDomain) {
+
+        storePersistencePort.findById(categoryDomain.getIdStore())
+                .orElseThrow(StoreNotFound::new);
+
         return categoryPersistencePort.save(categoryDomain);
     }
 
@@ -50,8 +58,8 @@ public class CategoryServicePortImpl implements CategoryServicePort {
     }
 
     @Override
-    public void delete(CategoryDomain categoryDomain) {
-        categoryPersistencePort.findById(categoryDomain.getId())
+    public void deleteByID(UUID id) {
+        CategoryDomain categoryDomain = categoryPersistencePort.findById(id)
                 .orElseThrow(CategoryNotFound::new);
 
         List<ProductDomain> allByCategory = productPersistencePort.findAllByCategory(categoryDomain.getId());
@@ -63,6 +71,6 @@ public class CategoryServicePortImpl implements CategoryServicePort {
             throw new ExistProductInCategory("Exist product in category, details: " + productDetails);
         }
 
-        categoryPersistencePort.delete(categoryDomain);
+        categoryPersistencePort.deleteByID(id);
     }
 }

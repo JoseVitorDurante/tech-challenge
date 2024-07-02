@@ -27,6 +27,12 @@ public class ProductPersistencePortImpl implements ProductPersistencePort {
     }
 
     @Override
+    public Optional<ProductDomain> findByIdAndIdStore(UUID idProduct, UUID idStore) {
+        return productJpaRepository.findByIdAndIdStore(idProduct, idStore)
+                .map(productEntity -> modelMapper.map(productEntity, ProductDomain.class));
+    }
+
+    @Override
     public ProductDomain save(ProductDomain productDomain) {
         ProductEntity map = modelMapper.map(productDomain, ProductEntity.class);
         ProductEntity productEntity = productJpaRepository.save(map);
@@ -34,8 +40,8 @@ public class ProductPersistencePortImpl implements ProductPersistencePort {
     }
 
     @Override
-    public void delete(ProductDomain productDomain) {
-        productJpaRepository.delete(modelMapper.map(productDomain, ProductEntity.class));
+    public void deleteByID(UUID id) {
+        productJpaRepository.deleteById(id);
     }
 
     @Override

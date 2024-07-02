@@ -86,9 +86,7 @@ public class CustomerController {
     @Operation(summary = "Delete a customer by id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomerById(@PathVariable UUID id) {
-        CustomerDomain domain = new CustomerDomain();
-        domain.setId(id);
-        customerServicePort.delete(domain);
+        customerServicePort.deleteByID(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

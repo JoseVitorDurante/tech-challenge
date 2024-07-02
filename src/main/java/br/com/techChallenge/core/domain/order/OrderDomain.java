@@ -4,6 +4,7 @@ import br.com.techChallenge.core.domain.customer.CustomerDomain;
 import br.com.techChallenge.core.domain.order.enums.StatusOrder;
 import br.com.techChallenge.core.domain.order.item.OrderItemDomain;
 import br.com.techChallenge.core.domain.payment.PaymentDomain;
+import br.com.techChallenge.core.domain.store.StoreDomain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,12 @@ public class OrderDomain {
     private UUID idCustomer;
 
     private CustomerDomain customer;
+
+    private UUID idStore;
+
+    private StoreDomain store;
+
+    private UUID idPayment;
 
     private PaymentDomain payment;
 

@@ -1,9 +1,12 @@
 # Comando para executar: docker compose up --build --force-recreate
-version: '3.7'
+version: '3.8'
 
 networks:
   tech-challenge-network:
     driver: bridge
+
+volumes:
+  pgdata:
 
 services:
 
@@ -18,21 +21,21 @@ services:
   #      - '8080:8080'
   #      - '5006:5006'
   #    environment:
-  #      PROFILE: AMBIENTEDOCKERLOCAL
   #      DB_HOST: db_tech_challenge
-  #      DB_PORT: 3306
+  #      DB_PORT: 5432
   #      ADDITIONAL_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
   #    depends_on:
   #      - db_tech_challenge
 
-  db_tech_challenge:
-    container_name: db_tech_challenge
-    image: 'mysql:8.0.29-debian'
+  db_postgres:
+    container_name: db_postgres
+    image: 'postgres:13.4'
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tech-challenge
     ports:
-      - "3306:3306"
-      - '5004:5004'
+      - "5432:5432"
+      - '5005:5005'
     volumes:
-      - /home/user/Desktop/db:/var/lib/mysql
+      - pgdata:/var/lib/postgresql/data

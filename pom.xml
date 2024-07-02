@@ -19,7 +19,6 @@
     <properties>
         <java.version>21</java.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
-        <mysql-connector.version>8.0.33</mysql-connector.version>
         <springdoc.version>2.5.0</springdoc.version>
         <modelmapper.version>3.2.0</modelmapper.version>
         <openfeign.version>4.1.1</openfeign.version>
@@ -39,10 +38,9 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
-            <version>${mysql-connector.version}</version>
         </dependency>
 
         <dependency>

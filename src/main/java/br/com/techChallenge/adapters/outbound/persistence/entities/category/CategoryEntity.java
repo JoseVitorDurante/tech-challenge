@@ -1,9 +1,8 @@
 package br.com.techChallenge.adapters.outbound.persistence.entities.category;
 
+import br.com.techChallenge.adapters.outbound.persistence.entities.store.StoreEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +26,12 @@ public class CategoryEntity implements Serializable {
     @NotNull
     @Column(nullable = false)
     private String name;
+
+    // ---------------------------------------- RELACIONAMENTOS ----------------------------------
+    @Column(name = "ID_STORE", nullable = false)
+    private UUID idStore;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_STORE", referencedColumnName = "ID", insertable = false, updatable = false)
+    private StoreEntity store;
 }

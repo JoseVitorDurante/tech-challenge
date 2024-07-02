@@ -5,6 +5,7 @@ import br.com.techChallenge.core.domain.order.OrderDomain;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,7 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         modelMapper.addMappings(new PropertyMap<OrderDomain, OrderResponse>() {
             @Override
@@ -23,6 +25,7 @@ public class ModelMapperConfig {
                 when(Conditions.isNotNull()).map(source.getPayment().getId(), destination.getIdPayment());
                 when(Conditions.isNotNull()).map(source.getPayment().getQrCode(), destination.getQrCode());
                 when(Conditions.isNotNull()).map(source.getPayment().getStatus(), destination.getPaymentStatus());
+                when(Conditions.isNotNull()).map(source.getPayment().getType(), destination.getPaymentType());
             }
         });
 

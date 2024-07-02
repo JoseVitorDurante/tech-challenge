@@ -18,5 +18,5 @@ public interface CustomerServicePort {
 
     CustomerDomain update(CustomerDomain updateCustomerDomain);
 
-    void delete(CustomerDomain customerDomain);
+    void deleteByID(UUID id);
 }

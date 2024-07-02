@@ -12,7 +12,7 @@ public interface CategoryPersistencePort {
 
     CategoryDomain save(CategoryDomain categoryDomain);
 
-    void delete(CategoryDomain categoryDomain);
+    void deleteByID(UUID id);
 
     List<CategoryDomain> findAll();
 }

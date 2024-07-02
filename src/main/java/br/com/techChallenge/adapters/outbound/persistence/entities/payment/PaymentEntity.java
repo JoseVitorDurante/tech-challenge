@@ -23,6 +23,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaymentEntity {
+
     @Id
     @UuidGenerator
     private UUID id;

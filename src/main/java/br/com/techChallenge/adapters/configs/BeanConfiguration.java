@@ -10,12 +10,16 @@ import br.com.techChallenge.core.ports.payment.PaymentIntegrationPort;
 import br.com.techChallenge.core.ports.payment.PaymentPersistencePort;
 import br.com.techChallenge.core.ports.product.ProductPersistencePort;
 import br.com.techChallenge.core.ports.product.ProductServicePort;
+import br.com.techChallenge.core.ports.store.StorePersistencePort;
+import br.com.techChallenge.core.ports.store.payment.MercadoPagoGatewayPersistencePort;
 import br.com.techChallenge.core.services.category.CategoryServicePortImpl;
 import br.com.techChallenge.core.services.customer.CustomerServicePortImpl;
 import br.com.techChallenge.core.services.order.OrderServicePortImpl;
 import br.com.techChallenge.core.services.order.item.OrderItemServicePortImpl;
 import br.com.techChallenge.core.services.payment.PaymentServiceService;
 import br.com.techChallenge.core.services.product.ProductServicePortImpl;
+import br.com.techChallenge.core.services.store.StoreServicePortImpl;
+import br.com.techChallenge.core.services.store.payment.MercadoPagoGatewayServicePortImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -30,23 +34,32 @@ import java.util.Map;
 public class BeanConfiguration {
 
     @Bean
+    public StoreServicePortImpl storeServicePortImpl(StorePersistencePort storePersistencePort,
+                                                     ModelMapper modelMapper) {
+        return new StoreServicePortImpl(storePersistencePort, modelMapper);
+    }
+
+    @Bean
     public CustomerServicePortImpl customerServicePortImpl(CustomerPersistencePort persistencePort,
-                                                           ModelMapper modelMapper) {
-        return new CustomerServicePortImpl(persistencePort, modelMapper);
+                                                           ModelMapper modelMapper,
+                                                           StorePersistencePort storePersistencePort) {
+        return new CustomerServicePortImpl(persistencePort, storePersistencePort, modelMapper);
     }
 
     @Bean
     public ProductServicePort productServicePort(ProductPersistencePort productPersistencePort,
                                                  CategoryPersistencePort categoryPersistencePort,
+                                                 StorePersistencePort storePersistencePort,
                                                  ModelMapper modelMapper) {
-        return new ProductServicePortImpl(productPersistencePort, categoryPersistencePort, modelMapper);
+        return new ProductServicePortImpl(productPersistencePort, categoryPersistencePort, storePersistencePort, modelMapper);
     }
 
     @Bean
     public CategoryServicePortImpl categoryServicePortImpl(CategoryPersistencePort categoryPersistencePort,
                                                            ProductPersistencePort productPersistencePort,
+                                                           StorePersistencePort storePersistencePort,
                                                            ModelMapper modelMapper) {
-        return new CategoryServicePortImpl(categoryPersistencePort, productPersistencePort, modelMapper);
+        return new CategoryServicePortImpl(categoryPersistencePort, productPersistencePort, storePersistencePort, modelMapper);
     }
 
     @Bean
@@ -56,8 +69,9 @@ public class BeanConfiguration {
                                                      OrderItemPersistencePort orderItemPersistencePort,
                                                      PaymentServiceService paymentServiceService,
                                                      PaymentPersistencePort paymentPersistencePort,
+                                                     StorePersistencePort storePersistencePort,
                                                      ModelMapper modelMapper) {
-        return new OrderServicePortImpl(orderPersistencePort, productPersistencePort, persistencePort, orderItemPersistencePort, paymentServiceService, paymentPersistencePort, modelMapper);
+        return new OrderServicePortImpl(orderPersistencePort, productPersistencePort, persistencePort, orderItemPersistencePort, paymentServiceService, paymentPersistencePort, storePersistencePort, modelMapper);
     }
 
     @Bean
@@ -76,5 +90,11 @@ public class BeanConfiguration {
         paymentIntegrationPorts.put(PaymentType.CIELO_QUALIFIER, cieloIntegrationPort);
         paymentIntegrationPorts.put(PaymentType.MERCADO_PAGO_QUALIFIER, mercadoPagoIntegrationPort);
         return new PaymentServiceService(paymentIntegrationPorts, paymentPersistencePort);
+    }
+
+    @Bean
+    public MercadoPagoGatewayServicePortImpl mercadoPagoGatewayServicePortImpl(MercadoPagoGatewayPersistencePort mercadoPagoGatewayPersistencePort,
+                                                                               ModelMapper modelMapper) {
+        return new MercadoPagoGatewayServicePortImpl(mercadoPagoGatewayPersistencePort, modelMapper);
     }
 }

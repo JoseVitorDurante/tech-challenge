@@ -15,6 +15,7 @@ import java.util.UUID;
 @Setter
 public class PaymentIntegrationOrder {
 
+    private UUID idStore;
     private UUID orderPaymentId;
     private BigDecimal amount;
 

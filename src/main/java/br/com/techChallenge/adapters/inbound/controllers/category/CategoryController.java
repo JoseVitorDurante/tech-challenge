@@ -5,6 +5,7 @@ import br.com.techChallenge.adapters.dtos.category.CategoryInputDTO;
 import br.com.techChallenge.core.domain.category.CategoryDomain;
 import br.com.techChallenge.core.ports.category.CategoryServicePort;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -49,10 +50,10 @@ public class CategoryController {
 
     @Operation(summary = "Create a new category")
     @PostMapping
-    public ResponseEntity<CategoryDTO> save(@RequestBody CategoryInputDTO categoryInputDTO) {
+    public ResponseEntity<CategoryDTO> save(@RequestBody @Valid CategoryInputDTO categoryInputDTO) {
         CategoryDomain domain = modelMapper.map(categoryInputDTO, CategoryDomain.class);
-        CategoryDomain savedPessoa = categoryServicePort.save(domain);
-        CategoryDTO dto = modelMapper.map(savedPessoa, CategoryDTO.class);
+        CategoryDomain categoryDomain = categoryServicePort.save(domain);
+        CategoryDTO dto = modelMapper.map(categoryDomain, CategoryDTO.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
@@ -70,9 +71,7 @@ public class CategoryController {
     @Operation(summary = "Delete a category by id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        CategoryDomain domain = new CategoryDomain();
-        domain.setId(id);
-        categoryServicePort.delete(domain);
+        categoryServicePort.deleteByID(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

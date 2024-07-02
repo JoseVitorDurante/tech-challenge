@@ -3,6 +3,7 @@ package br.com.techChallenge.adapters.outbound.persistence.entities.order;
 import br.com.techChallenge.adapters.outbound.persistence.entities.customer.CustomerEntity;
 import br.com.techChallenge.adapters.outbound.persistence.entities.order.item.OrderItemEntity;
 import br.com.techChallenge.adapters.outbound.persistence.entities.payment.PaymentEntity;
+import br.com.techChallenge.adapters.outbound.persistence.entities.store.StoreEntity;
 import br.com.techChallenge.core.domain.order.enums.StatusOrder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderEntity {
+
     @Id
     @UuidGenerator
     private UUID id;
@@ -46,18 +48,27 @@ public class OrderEntity {
 
     // ---------------------------------------- RELACIONAMENTOS ----------------------------------
 
-    @Column(name = "ID_CUSTOMER", nullable = true)
+    @Column(name = "ID_STORE", nullable = false)
+    private UUID idStore;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_STORE", referencedColumnName = "ID", insertable = false, updatable = false)
+    private StoreEntity store;
+
+    @Column(name = "ID_CUSTOMER")
     private UUID idCustomer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CUSTOMER", referencedColumnName = "ID", insertable = false, updatable = false)
     private CustomerEntity customer;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    private List<OrderItemEntity> items = new ArrayList<>();
+    @Column(name = "ID_PAYMENT")
+    private UUID idPayment;
 
-    @OneToOne(orphanRemoval = true)
-    @JoinColumn(name = "payment_entity_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PAYMENT", referencedColumnName = "ID", insertable = false, updatable = false)
     private PaymentEntity payment;
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<OrderItemEntity> items = new ArrayList<>();
 }

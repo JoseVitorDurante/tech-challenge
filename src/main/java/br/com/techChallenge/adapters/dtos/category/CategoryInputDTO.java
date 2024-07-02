@@ -17,4 +17,8 @@ public class CategoryInputDTO {
     @Size(min = 3, max = 60)
     private String name;
 
+    @Schema(description = "Store ID", example = "e1defa99-5e85-4b34-906e-145b1f42bd57")
+    @NotNull
+    private String idStore;
+
 }

@@ -15,7 +15,6 @@ public interface CategoryServicePort {
 
     CategoryDomain update(CategoryDomain updateCategoryDomain);
 
-    void delete(CategoryDomain categoryDomain);
-
+    void deleteByID(UUID id);
 
 }

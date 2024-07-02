@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 )
 public interface MercadoPagoClient {
 
-    @PostMapping("/instore/orders/qr/seller/collectors/{userId}/pos/{externalPosId}/qrs")
+    @PostMapping("/instore/orders/qr/seller/collectors/{userId}/pos/{externalPos}/qrs")
     @Headers("Content-Type: application/json")
     MercadoPagoResponse createOrder(
             @RequestHeader("Authorization") String authorization,
             @PathVariable("userId") String userId,
-            @PathVariable("externalPosId") String externalPosId,
+            @PathVariable("externalPos") String externalPos,
             @RequestBody MercadoPagoRequest mercadoPagoRequest
     );
 }

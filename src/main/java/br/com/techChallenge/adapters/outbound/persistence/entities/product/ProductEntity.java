@@ -1,6 +1,7 @@
 package br.com.techChallenge.adapters.outbound.persistence.entities.product;
 
 import br.com.techChallenge.adapters.outbound.persistence.entities.category.CategoryEntity;
+import br.com.techChallenge.adapters.outbound.persistence.entities.store.StoreEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -40,4 +41,11 @@ public class ProductEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CATEGORY", referencedColumnName = "ID", insertable = false, updatable = false)
     private CategoryEntity category;
+
+    @Column(name = "ID_STORE", nullable = false)
+    private UUID idStore;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_STORE", referencedColumnName = "ID", insertable = false, updatable = false)
+    private StoreEntity store;
 }

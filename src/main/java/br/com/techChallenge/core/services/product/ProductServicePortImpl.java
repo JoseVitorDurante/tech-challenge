@@ -2,12 +2,13 @@ package br.com.techChallenge.core.services.product;
 
 import br.com.techChallenge.core.domain.product.ProductDomain;
 import br.com.techChallenge.core.exceptions.category.CategoryNotFound;
-import br.com.techChallenge.core.exceptions.customer.CustomerNotFound;
 import br.com.techChallenge.core.exceptions.product.ProductInvalidPrice;
 import br.com.techChallenge.core.exceptions.product.ProductNotFound;
+import br.com.techChallenge.core.exceptions.store.StoreNotFound;
 import br.com.techChallenge.core.ports.category.CategoryPersistencePort;
 import br.com.techChallenge.core.ports.product.ProductPersistencePort;
 import br.com.techChallenge.core.ports.product.ProductServicePort;
+import br.com.techChallenge.core.ports.store.StorePersistencePort;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 
@@ -21,6 +22,8 @@ public class ProductServicePortImpl implements ProductServicePort {
     final ProductPersistencePort productPersistencePort;
 
     final CategoryPersistencePort categoryPersistencePort;
+
+    final StorePersistencePort storePersistencePort;
 
     final ModelMapper modelMapper;
 
@@ -49,6 +52,9 @@ public class ProductServicePortImpl implements ProductServicePort {
         categoryPersistencePort.findById(productDomain.getIdCategory())
                 .orElseThrow(CategoryNotFound::new);
 
+        storePersistencePort.findById(productDomain.getIdStore())
+                .orElseThrow(StoreNotFound::new);
+
         if (productDomain.getPrice().compareTo(BigDecimal.ZERO) <= 0)
             throw new ProductInvalidPrice();
 
@@ -59,7 +65,7 @@ public class ProductServicePortImpl implements ProductServicePort {
     @Override
     public ProductDomain update(ProductDomain updateProductDomain) {
         ProductDomain domain = productPersistencePort.findById(updateProductDomain.getId())
-                .orElseThrow(CustomerNotFound::new);
+                .orElseThrow(ProductNotFound::new);
 
         modelMapper.map(updateProductDomain, domain);
 
@@ -67,9 +73,9 @@ public class ProductServicePortImpl implements ProductServicePort {
     }
 
     @Override
-    public void delete(ProductDomain productDomain) {
-        productPersistencePort.findById(productDomain.getId())
+    public void deleteByID(UUID id) {
+        productPersistencePort.findById(id)
                 .orElseThrow(ProductNotFound::new);
-        productPersistencePort.delete(productDomain);
+        productPersistencePort.deleteByID(id);
     }
 }

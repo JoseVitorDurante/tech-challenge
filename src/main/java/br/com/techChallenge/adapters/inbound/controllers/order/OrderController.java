@@ -39,28 +39,28 @@ public class OrderController {
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<List<OrderResponse>> getByCpf(@PathVariable String cpf) {
         List<OrderDomain> orderDomains = orderServicePort.findByCpf(cpf);
-        List<OrderResponse> orderResponses = orderDomains.stream()
+        List<OrderResponse> orderRespons = orderDomains.stream()
                 .map(orderDomain -> modelMapper.map(orderDomain, OrderResponse.class))
                 .collect(Collectors.toList());
 
-        if (orderResponses.isEmpty())
+        if (orderRespons.isEmpty())
             return ResponseEntity.noContent().build();
 
-        return ResponseEntity.ok(orderResponses);
+        return ResponseEntity.ok(orderRespons);
     }
 
     @Operation(summary = "Get all orders")
     @GetMapping("/all")
     public ResponseEntity<List<OrderResponse>> getAll() {
         List<OrderDomain> orderDomains = orderServicePort.findAll();
-        List<OrderResponse> orderResponses = orderDomains.stream()
+        List<OrderResponse> orderRespons = orderDomains.stream()
                 .map(orderDomain -> modelMapper.map(orderDomain, OrderResponse.class))
                 .collect(Collectors.toList());
 
-        if (orderResponses.isEmpty())
+        if (orderRespons.isEmpty())
             return ResponseEntity.noContent().build();
 
-        return ResponseEntity.ok(orderResponses);
+        return ResponseEntity.ok(orderRespons);
     }
 
     @Operation(summary = "Create a new order")
@@ -68,7 +68,7 @@ public class OrderController {
     public ResponseEntity<OrderResponse> save(@RequestBody OrderRequest orderRequest) {
         OrderDomain orderDomain = convertToOrderDomain(orderRequest);
 
-        OrderDomain orderDomainSaved = orderServicePort.save(orderDomain, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null);
+        OrderDomain orderDomainSaved = orderServicePort.save(orderDomain, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null, orderRequest.getPaymentType());
         OrderResponse orderResponseSaved = modelMapper.map(orderDomainSaved, OrderResponse.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponseSaved);
     }
@@ -78,7 +78,7 @@ public class OrderController {
     public ResponseEntity<OrderResponse> update(@PathVariable UUID id, @RequestBody OrderRequest orderRequest) {
         OrderDomain orderDomain = convertToOrderDomain(orderRequest);
 
-        OrderDomain orderDomainUpdated = orderServicePort.update(id, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null, orderDomain.getItems());
+        OrderDomain orderDomainUpdated = orderServicePort.update(id, orderRequest.getCustomer() != null ? orderRequest.getCustomer().getCpf() : null, orderDomain.getItems(), orderRequest.getPaymentType());
         OrderResponse orderResponseUpdated = modelMapper.map(orderDomainUpdated, OrderResponse.class);
         return ResponseEntity.ok(orderResponseUpdated);
     }
@@ -92,6 +92,7 @@ public class OrderController {
 
     private OrderDomain convertToOrderDomain(@RequestBody OrderRequest orderRequest) {
         OrderDomain orderDomain = new OrderDomain();
+        orderDomain.setIdStore(orderRequest.getIdStore());
         orderDomain.setItems(orderRequest.getItems().stream()
                 .map(item -> {
                     OrderItemDomain orderItemDomain = new OrderItemDomain();

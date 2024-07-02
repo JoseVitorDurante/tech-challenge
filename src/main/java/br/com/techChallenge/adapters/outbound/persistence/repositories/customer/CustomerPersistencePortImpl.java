@@ -51,9 +51,7 @@ public class CustomerPersistencePortImpl implements CustomerPersistencePort {
     }
 
     @Override
-    public void delete(CustomerDomain customerDomain) {
-        customerJpaRepository.delete(modelMapper.map(customerDomain, CustomerEntity.class));
+    public void deleteByID(UUID id) {
+        customerJpaRepository.deleteById(id);
     }
-
-
 }

@@ -26,7 +26,7 @@ public class PaymentPersistencePortImpl implements PaymentPersistencePort {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void deleteByID(UUID id) {
         productJpaRepository.deleteById(id);
     }
 

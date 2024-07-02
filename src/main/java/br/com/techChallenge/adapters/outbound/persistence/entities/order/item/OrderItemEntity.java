@@ -18,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderItemEntity {
+
     @Id
     @UuidGenerator
     private UUID id;
