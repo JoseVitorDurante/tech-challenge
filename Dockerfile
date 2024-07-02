@@ -12,11 +12,11 @@ RUN mvn dependency:go-offline
 COPY src src
 RUN mvn package -DskipTests
 
+FROM openjdk:21-slim
+
 RUN apt-get update && \
     apt-get install -y stress && \
     rm -rf /var/lib/apt/lists/*
-
-FROM openjdk:21-slim
 
 ARG PROFILE
 ARG ADDITIONAL_OPTS
