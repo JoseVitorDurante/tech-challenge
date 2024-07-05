@@ -61,6 +61,11 @@ public class OrderServicePortImpl implements OrderServicePort {
     }
 
     @Override
+    public List<OrderDomain> findAllOrdered() {
+        return orderPersistencePort.findAllOrdered();
+    }
+
+    @Override
     public OrderDomain save(OrderDomain orderDomain, String cpf, PaymentType provider) {
         validatedStore(orderDomain);
 
@@ -197,7 +202,7 @@ public class OrderServicePortImpl implements OrderServicePort {
         StoreDomain storeDomain = storePersistencePort.findById(orderDomain.getIdStore())
                 .orElseThrow(StoreNotFound::new);
 
-        if (storeDomain.isActive())
+        if (!storeDomain.isActive())
             throw new StoreInactive();
 
         orderDomain.setStore(storeDomain);

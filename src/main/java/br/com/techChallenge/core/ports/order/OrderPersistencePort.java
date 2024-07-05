@@ -14,5 +14,7 @@ public interface OrderPersistencePort {
 
     List<OrderDomain> findAll();
 
+    List<OrderDomain> findAllOrdered();
+
     List<OrderDomain> findByIdCustomer(UUID idCustomer);
 }

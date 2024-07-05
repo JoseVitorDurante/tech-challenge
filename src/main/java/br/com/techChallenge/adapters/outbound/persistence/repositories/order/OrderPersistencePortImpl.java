@@ -45,6 +45,18 @@ public class OrderPersistencePortImpl implements OrderPersistencePort {
     }
 
     @Override
+    public List<OrderDomain> findAllOrdered() {
+        List<OrderEntity> findAll = orderJpaRepository.findAllOrderedByStatusAndDate();
+        if (!findAll.isEmpty()) {
+            return findAll.stream()
+                    .map(orderEntity -> modelMapper.map(orderEntity, OrderDomain.class))
+                    .toList();
+        }
+
+        return List.of();
+    }
+
+    @Override
     public List<OrderDomain> findByIdCustomer(UUID idCustomer) {
         List<OrderEntity> findAll = orderJpaRepository.findByIdCustomer(idCustomer);
         if (!findAll.isEmpty()) {

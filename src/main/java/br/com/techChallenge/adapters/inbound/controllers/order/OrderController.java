@@ -63,6 +63,20 @@ public class OrderController {
         return ResponseEntity.ok(orderRespons);
     }
 
+    @Operation(summary = "Get all ordered by status and date")
+    @GetMapping("/all/ordered")
+    public ResponseEntity<List<OrderResponse>> getAllOrdered() {
+        List<OrderDomain> orderDomains = orderServicePort.findAllOrdered();
+        List<OrderResponse> orderRespons = orderDomains.stream()
+                .map(orderDomain -> modelMapper.map(orderDomain, OrderResponse.class))
+                .collect(Collectors.toList());
+
+        if (orderRespons.isEmpty())
+            return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(orderRespons);
+    }
+
     @Operation(summary = "Create a new order")
     @PostMapping("/create")
     public ResponseEntity<OrderResponse> save(@RequestBody OrderRequest orderRequest) {

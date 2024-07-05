@@ -14,6 +14,8 @@ public interface OrderServicePort {
 
     List<OrderDomain> findAll();
 
+    List<OrderDomain> findAllOrdered();
+
     OrderDomain save(OrderDomain orderDomain, String cpf, PaymentType provider);
 
     OrderDomain update(UUID idOrder, String cpf, List<OrderItemDomain> items, PaymentType provider);
