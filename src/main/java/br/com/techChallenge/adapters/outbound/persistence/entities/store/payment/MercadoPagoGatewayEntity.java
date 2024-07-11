@@ -28,8 +28,4 @@ public class MercadoPagoGatewayEntity {
     @NotNull
     @Column(nullable = false)
     private String externalPos;
-
-    @NotNull
-    @Column(nullable = false)
-    private String accessToken;
 }

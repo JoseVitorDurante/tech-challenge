@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8088}
   error:
     include-message: always
 
@@ -39,3 +39,4 @@ springdoc:
 
 mercadopago:
   url: "https://api.mercadopago.com"
+  accessToken: "Bearer APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194"

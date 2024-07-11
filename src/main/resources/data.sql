@@ -1,6 +1,5 @@
-INSERT INTO "mercado_pago_gateways" ("id", "collectors", "external_pos", "access_token")
-VALUES ('773f0c86-96a1-467e-af8b-184c2994f9ac', '1650421194', 'SUC001POS001',
-        'APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194')
+INSERT INTO "mercado_pago_gateways" ("id", "collectors", "external_pos")
+VALUES ('773f0c86-96a1-467e-af8b-184c2994f9ac', '1650421194', 'SUC001POS001')
 ON CONFLICT ("id") DO NOTHING;
 
 INSERT INTO stores (id, name, active, id_mercado_pago_gateway)

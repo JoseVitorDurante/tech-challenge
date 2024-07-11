@@ -17,5 +17,4 @@ public class MercadoPagoGatewayDomain {
     private UUID id;
     private String collectors;
     private String externalPos;
-    private String accessToken;
 }

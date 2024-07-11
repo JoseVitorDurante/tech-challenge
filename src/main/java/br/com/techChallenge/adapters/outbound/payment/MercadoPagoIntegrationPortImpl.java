@@ -13,6 +13,7 @@ import br.com.techChallenge.core.dto.payment.PaymentIntegrationOrder;
 import br.com.techChallenge.core.dto.payment.PaymentIntegrationResult;
 import br.com.techChallenge.core.ports.payment.PaymentIntegrationPort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -25,6 +26,9 @@ public class MercadoPagoIntegrationPortImpl implements PaymentIntegrationPort {
 
     @Autowired
     private StorePersistencePortImpl storePersistencePort;
+
+    @Value("${mercadopago.accessToken}")
+    private String accessToken;
 
     @Override
     public PaymentIntegrationResult processPayment(PaymentIntegrationOrder paymentIntegrationOrder) {
@@ -52,13 +56,13 @@ public class MercadoPagoIntegrationPortImpl implements PaymentIntegrationPort {
 
         StoreEntity storeEntity = storePersistencePort.entityfindById(paymentIntegrationOrder.getIdStore());
 
-        MercadoPagoResponse mercadoPagoResponse = mercadoPagoClient.createOrder(
-                "Bearer " + storeEntity.getMercadoPagoGateway().getAccessToken(),
+        MercadoPagoResponse paymentMercadoPagoResponse = mercadoPagoClient.createOrder(
+                accessToken,
                 storeEntity.getMercadoPagoGateway().getCollectors(),
                 storeEntity.getMercadoPagoGateway().getExternalPos(),
                 mercadoPagoRequest);
 
         return new PaymentIntegrationResult(paymentIntegrationOrder.getOrderPaymentId(),
-                mercadoPagoResponse.getQrData());
+                paymentMercadoPagoResponse.getQrData());
     }
 }
