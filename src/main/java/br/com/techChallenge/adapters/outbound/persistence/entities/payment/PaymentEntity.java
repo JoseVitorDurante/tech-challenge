@@ -25,7 +25,6 @@ import java.util.UUID;
 public class PaymentEntity {
 
     @Id
-    @UuidGenerator
     private UUID id;
 
     @NotNull
