@@ -21,13 +21,16 @@ import java.math.BigDecimal;
 @Component(PaymentType.MERCADO_PAGO_QUALIFIER)
 public class MercadoPagoIntegrationPortImpl implements PaymentIntegrationPort {
 
+    @Value("${mercado-pago.notification-url}")
+    private String notificationUrl;
+
     @Autowired
     private MercadoPagoClient mercadoPagoClient;
 
     @Autowired
     private StorePersistencePortImpl storePersistencePort;
 
-    @Value("${mercadopago.accessToken}")
+    @Value("${mercado-pago.access-token}")
     private String accessToken;
 
     @Override
@@ -42,7 +45,7 @@ public class MercadoPagoIntegrationPortImpl implements PaymentIntegrationPort {
         mercadoPagoRequest.setExpirationDate(DateTimeUtils.generateExpirationDatePayment());
         mercadoPagoRequest.setExternalReference(paymentIntegrationOrder.getOrderPaymentId().toString());
         mercadoPagoRequest.setTotalAmount(paymentIntegrationOrder.getAmount());
-        mercadoPagoRequest.setNotificationUrl("https://www.yourserver.com/notifications");
+        mercadoPagoRequest.setNotificationUrl(notificationUrl);
 
         paymentIntegrationOrder.getItems().forEach(item -> {
             ItemMercadoPago itemMercadoPago = new ItemMercadoPago();

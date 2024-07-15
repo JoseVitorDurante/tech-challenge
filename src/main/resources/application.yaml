@@ -13,8 +13,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      #      ddl-auto: create #toda a vez que subir vai limpar o banco so para teste
-      dialect: org.hibernate.dialect.MySQL8Dialect
       jdbc:
         lob.non-contextual-creation: true
     properties:
@@ -36,6 +34,7 @@ springdoc:
     enabled: true
     path: /swagger-ui.html
 
-mercadopago:
+mercado-pago:
   url: "https://api.mercadopago.com"
-  accessToken: "Bearer APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194"
+  access-token: "Bearer APP_USR-151362775144770-012219-ad26be97b5a2ceab5965aaf6409a0d70-1650421194"
+  notification-url: ${NOTIFICATION_URL:https://warm-sheepdog-secondly.ngrok-free.app/order/notifications}
