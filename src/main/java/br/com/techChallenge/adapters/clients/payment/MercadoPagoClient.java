@@ -3,6 +3,7 @@ package br.com.techChallenge.adapters.clients.payment;
 import br.com.techChallenge.adapters.configs.FeignConfig;
 import br.com.techChallenge.adapters.dtos.integration.mercadopago.payment.request.MercadoPagoRequest;
 import br.com.techChallenge.adapters.dtos.integration.mercadopago.payment.response.MercadoPagoResponse;
+import br.com.techChallenge.adapters.dtos.integration.mercadopago.payment.response.MerchantOrderResponse;
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,4 +25,12 @@ public interface MercadoPagoClient {
             @PathVariable("externalPos") String externalPos,
             @RequestBody MercadoPagoRequest mercadoPagoRequest
     );
+
+    @PostMapping("/merchant_orders/{orderId}")
+    @Headers("Content-Type: application/json")
+    MerchantOrderResponse getOrder(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable(name = "orderId") Long orderId
+    );
+
 }

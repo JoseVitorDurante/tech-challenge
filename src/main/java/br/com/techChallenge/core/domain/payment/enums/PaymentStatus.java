@@ -1,9 +1,18 @@
 package br.com.techChallenge.core.domain.payment.enums;
 
 public enum PaymentStatus {
-    CREATED,
+
     PENDING,
     APPROVED,
-    REJECTED,
-    CANCELED,
+    CANCELLED;
+
+    public static PaymentStatus fromString(String status) {
+        return switch (status) {
+            case "opened" -> PENDING;
+            case "closed" -> APPROVED;
+            case "expired" -> CANCELLED;
+            default -> throw new IllegalArgumentException("Invalid payment status: " + status);
+        };
+    }
+
 }
