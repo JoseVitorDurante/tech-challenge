@@ -26,8 +26,7 @@ public class NotificationService {
     private String accessToken;
 
     public void updatePaymentStatus(Long merchantOrderId) {
-        String formattedAccessToken = String.format("Bearer %s", accessToken);
-        MerchantOrderResponse response = mercadoPagoClient.getOrder(formattedAccessToken, merchantOrderId);
+        MerchantOrderResponse response = mercadoPagoClient.getOrder(accessToken, merchantOrderId);
 
         PaymentEntity storedPayment = getPaymentEntity(response.getExternalReference());
         storedPayment.setStatus(PaymentStatus.fromString(response.getStatus()));

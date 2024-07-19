@@ -1,5 +1,5 @@
 # Comando para executar: docker compose up --build --force-recreate
-version: '3.8'
+version: '3.9'
 
 networks:
   tech-challenge-network:
@@ -9,24 +9,6 @@ volumes:
   pgdata:
 
 services:
-
-  #  ##############################################
-  #  tech-challenge-service:
-  #    container_name: tech-challenge
-  #    image: tech-challenge
-  #    build:
-  #      context: .
-  #      dockerfile: Dockerfile
-  #    ports:
-  #      - '8080:8080'
-  #      - '5006:5006'
-  #    environment:
-  #      DB_HOST: db_tech_challenge
-  #      DB_PORT: 5432
-  #      ADDITIONAL_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
-  #    depends_on:
-  #      - db_tech_challenge
-
   db_postgres:
     container_name: db_postgres
     image: 'postgres:13.4'
@@ -37,5 +19,45 @@ services:
     ports:
       - "5432:5432"
       - '5005:5005'
+    networks:
+      - tech-challenge-network
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  tech-challenge:
+    container_name: tech-challenge
+    image: tech-challenge
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8088:8088'
+      - '5006:5006'
+    environment:
+      PORT: 8088
+      DB_HOST: db_postgres
+      DB_PORT: 5432
+      NOTIFICATION_URL: https://pure-daily-grackle.ngrok-free.app/order/notifications
+      ADDITIONAL_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+    networks:
+      - tech-challenge-network
+    depends_on:
+      - db_postgres
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok
+    restart: unless-stopped
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./ngrok.yml:/etc/ngrok.yml
+    ports:
+      - 4040:4040
+    networks:
+      - tech-challenge-network
+    depends_on:
+      - tech-challenge

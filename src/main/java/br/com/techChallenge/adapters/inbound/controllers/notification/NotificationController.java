@@ -23,7 +23,8 @@ public class NotificationController {
         log.debug("Received notification - ID: {}, Topic: {}", id, topic);
         log.debug("Payload: {}", payload);
 
-        notificationService.updatePaymentStatus(id);
+        if (topic.equals("merchant_order"))
+            notificationService.updatePaymentStatus(id);
 
         return ResponseEntity.ok().build();
     }

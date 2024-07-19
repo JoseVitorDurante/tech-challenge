@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tech-challenge
+  labels:
+    app: tech-challenge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tech-challenge
+  template:
+    metadata:
+      labels:
+        app: tech-challenge
+    spec:
+      containers:
+        - name: tech-challenge
+          image: tech-challenge:local
+          ports:
+            - containerPort: 8088
+          env:
+            - name: PORT
+              value: "8088"
+            - name: DB_HOST
+              value: postgresql-service
+            - name: DB_PORT
+              value: "5432"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
