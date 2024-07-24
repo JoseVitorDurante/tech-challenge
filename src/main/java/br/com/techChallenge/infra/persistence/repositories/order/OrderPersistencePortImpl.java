@@ -2,7 +2,7 @@ package br.com.techChallenge.infra.persistence.repositories.order;
 
 
 import br.com.techChallenge.domain.entity.order.OrderDomain;
-import br.com.techChallenge.domain.port.order.OrderPersistencePort;
+import br.com.techChallenge.domain.persistence.order.OrderPersistence;
 import br.com.techChallenge.infra.persistence.entities.order.OrderEntity;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Component
-public class OrderPersistencePortImpl implements OrderPersistencePort {
+public class OrderPersistencePortImpl implements OrderPersistence {
 
     private final OrderJpaRepository orderJpaRepository;
     private final ModelMapper modelMapper;

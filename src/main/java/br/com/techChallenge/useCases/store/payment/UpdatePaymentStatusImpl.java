@@ -19,12 +19,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UpdatePaymentStatusImpl implements UpdatePaymentStatus {
 
-    private final PaymentPersistencePortImpl paymentPersistencePort;
+    private final PaymentPersistencePortImpl persistencePort;
     private final FindPaymentById findPaymentById;
     private final MercadoPagoClient mercadoPagoClient;
 
     @Value("${mercado-pago.access-token}")
     private String accessToken;
+
     @Override
     public void execute(Long merchantOrderId) {
 
@@ -32,7 +33,7 @@ public class UpdatePaymentStatusImpl implements UpdatePaymentStatus {
         PaymentDomain paymentDomain = findPaymentById.execute(UUID.fromString(response.getExternalReference()));
         paymentDomain.setStatus(PaymentStatus.fromString(response.getStatus()));
 
-        paymentPersistencePort.save(paymentDomain);
+        persistencePort.save(paymentDomain);
         log.info("Payment status updated.");
 
     }

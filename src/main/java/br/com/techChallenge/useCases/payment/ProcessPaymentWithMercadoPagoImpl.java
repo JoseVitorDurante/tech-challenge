@@ -1,6 +1,5 @@
 package br.com.techChallenge.useCases.payment;
 
-import br.com.techChallenge.infra.gateways.payment.MercadoPagoClient;
 import br.com.techChallenge.application.dtos.integration.mercadopago.payment.request.CashOutMercadoPago;
 import br.com.techChallenge.application.dtos.integration.mercadopago.payment.request.ItemMercadoPago;
 import br.com.techChallenge.application.dtos.integration.mercadopago.payment.request.MercadoPagoRequest;
@@ -11,14 +10,13 @@ import br.com.techChallenge.domain.entity.payment.enums.PaymentType;
 import br.com.techChallenge.domain.entity.store.StoreDomain;
 import br.com.techChallenge.domain.useCases.payment.ProcessPayment;
 import br.com.techChallenge.domain.useCases.store.FindStoreById;
+import br.com.techChallenge.infra.gateways.payment.MercadoPagoClient;
 import br.com.techChallenge.infra.persistence.entities.store.StoreEntity;
 import br.com.techChallenge.useCases.util.DateTimeUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 

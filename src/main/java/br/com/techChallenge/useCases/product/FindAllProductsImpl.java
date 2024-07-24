@@ -1,7 +1,7 @@
 package br.com.techChallenge.useCases.product;
 
 import br.com.techChallenge.domain.entity.product.ProductDomain;
-import br.com.techChallenge.domain.port.product.ProductPersistencePort;
+import br.com.techChallenge.domain.persistence.product.ProductPersistence;
 import br.com.techChallenge.domain.useCases.product.FindAllProducts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,9 +12,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FindAllProductsImpl implements FindAllProducts {
 
-    private final ProductPersistencePort productPersistencePort;
+    private final ProductPersistence productPersistence;
     @Override
     public List<ProductDomain> execute() {
-        return productPersistencePort.findAll();
+        return productPersistence.findAll();
     }
 }

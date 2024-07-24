@@ -2,7 +2,7 @@ package br.com.techChallenge.infra.persistence.repositories.store.payment;
 
 
 import br.com.techChallenge.domain.entity.store.payment.MercadoPagoGatewayDomain;
-import br.com.techChallenge.domain.port.store.payment.MercadoPagoGatewayPersistencePort;
+import br.com.techChallenge.domain.persistence.store.payment.MercadoPagoGatewayPersistence;
 import br.com.techChallenge.infra.persistence.entities.store.payment.MercadoPagoGatewayEntity;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Component
-public class MercadoPagoGatewayPersistencePortImpl implements MercadoPagoGatewayPersistencePort {
+public class MercadoPagoGatewayPersistencePortImpl implements MercadoPagoGatewayPersistence {
 
     private final MercadoPagoGatewayJpaRepository mercadoPagoGatewayJpaRepository;
     private final ModelMapper modelMapper;

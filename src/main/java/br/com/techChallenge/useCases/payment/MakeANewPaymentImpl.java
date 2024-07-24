@@ -8,7 +8,7 @@ import br.com.techChallenge.domain.entity.payment.PaymentDomain;
 import br.com.techChallenge.domain.entity.payment.enums.PaymentStatus;
 import br.com.techChallenge.domain.entity.payment.enums.PaymentType;
 import br.com.techChallenge.domain.useCases.payment.ProcessPayment;
-import br.com.techChallenge.domain.port.payment.PaymentPersistencePort;
+import br.com.techChallenge.domain.persistence.payment.PaymentPersistence;
 import br.com.techChallenge.domain.useCases.payment.MakeANewPayment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MakeANewPaymentImpl implements MakeANewPayment {
 
-    final PaymentPersistencePort paymentPersistencePort;
+    final PaymentPersistence paymentPersistence;
     @Override
     public PaymentDomain execute(OrderDomain orderDomain, PaymentType provider, ProcessPayment processPayment) {
 
@@ -55,6 +55,6 @@ public class MakeANewPaymentImpl implements MakeANewPayment {
         paymentDomain.setStatus(PaymentStatus.PENDING);
         paymentDomain.setIdOrder(orderDomain.getId());
 
-        return paymentPersistencePort.save(paymentDomain);
+        return paymentPersistence.save(paymentDomain);
     }
 }

@@ -2,7 +2,7 @@ package br.com.techChallenge.useCases.product;
 
 import br.com.techChallenge.useCases.product.exceptions.ProductInvalidPrice;
 import br.com.techChallenge.domain.entity.product.ProductDomain;
-import br.com.techChallenge.domain.port.product.ProductPersistencePort;
+import br.com.techChallenge.domain.persistence.product.ProductPersistence;
 import br.com.techChallenge.domain.useCases.category.FindCategoryById;
 import br.com.techChallenge.domain.useCases.product.CreateNewProduct;
 import br.com.techChallenge.domain.useCases.store.FindStoreById;
@@ -17,7 +17,7 @@ public class CreateNewProductImpl implements CreateNewProduct {
 
     private final FindCategoryById findCategoryById;
     private final FindStoreById findStoreById;
-    private final ProductPersistencePort productPersistencePort;
+    private final ProductPersistence productPersistence;
 
     @Override
     public ProductDomain execute(ProductDomain productDomain) {
@@ -29,6 +29,6 @@ public class CreateNewProductImpl implements CreateNewProduct {
             throw new ProductInvalidPrice();
 
 
-        return productPersistencePort.save(productDomain);
+        return productPersistence.save(productDomain);
     }
 }

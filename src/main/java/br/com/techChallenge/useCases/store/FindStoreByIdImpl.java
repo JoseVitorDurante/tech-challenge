@@ -1,7 +1,7 @@
 package br.com.techChallenge.useCases.store;
 
 import br.com.techChallenge.domain.entity.store.StoreDomain;
-import br.com.techChallenge.domain.port.store.StorePersistencePort;
+import br.com.techChallenge.domain.persistence.store.StorePersistence;
 import br.com.techChallenge.domain.useCases.store.FindStoreById;
 import br.com.techChallenge.useCases.store.exceptions.StoreNotFound;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FindStoreByIdImpl implements FindStoreById {
 
-    final StorePersistencePort storePersistencePort;
+    final StorePersistence storePersistence;
     @Override
     public StoreDomain execute(UUID id) {
-        return storePersistencePort.findById(id)
+        return storePersistence.findById(id)
                 .orElseThrow(StoreNotFound::new);
     }
 }

@@ -2,7 +2,7 @@ package br.com.techChallenge.infra.persistence.repositories.customer;
 
 
 import br.com.techChallenge.domain.entity.customer.CustomerDomain;
-import br.com.techChallenge.domain.port.customer.CustomerPersistencePort;
+import br.com.techChallenge.domain.persistence.customer.CustomerPersistence;
 import br.com.techChallenge.infra.persistence.entities.customer.CustomerEntity;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Component
-public class CustomerPersistencePortImpl implements CustomerPersistencePort {
+public class CustomerPersistencePortImpl implements CustomerPersistence {
 
     private final CustomerJpaRepository customerJpaRepository;
     private final ModelMapper modelMapper;
