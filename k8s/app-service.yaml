@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: tech-challenge-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-    - port: 8088
+    - port: 80
       targetPort: 8088
       nodePort: 30007
   selector:

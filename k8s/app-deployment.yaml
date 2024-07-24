@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: tech-challenge
-          image: tech-challenge:local
+          image: josevitordurante/tech-challenge:latest
           ports:
             - containerPort: 8088
           env:
@@ -26,6 +26,8 @@ spec:
               value: postgresql-service
             - name: DB_PORT
               value: "5432"
+            - name: NOTIFICATION_URL
+              value: tech-challenge-service/order/notifications
           resources:
             requests:
               memory: "128Mi"

@@ -41,7 +41,7 @@ kubectl apply -f postgresql-service.yaml
 3. Rodar o deployment do Postgres
 
 ```bash
-kubectl apply -f postgresql-deployment.yaml
+kubectl apply -f postgresql-statefulset.yaml
 ```
 
 #### Aplicação tech-challenge
@@ -69,8 +69,9 @@ kubectl apply -f app-hpa.yaml
 ### Subir tudo
 
 ```bash
+kubectl apply -f postgres-pv.yaml
 kubectl apply -f postgresql-pvc.yaml
-kubectl apply -f postgresql-deployment.yaml
+kubectl apply -f postgresql-statefulset.yaml
 kubectl apply -f postgresql-service.yaml
 kubectl apply -f app-deployment.yaml
 kubectl apply -f app-service.yaml
@@ -140,6 +141,7 @@ kubectl delete services --all -n default
 kubectl delete pods --all -n default
 kubectl delete pvc --all -n default
 kubectl delete hpa --all -n default
+kubectl delete pv --all
 ```
 
 ## Buscar o IP do serviço

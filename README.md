@@ -1,5 +1,13 @@
 # Tech-challenge
 
+Para Rodar no ngrok e testar a aplicação, siga os passos abaixo:
+
+1. Rodar o comando
+
+```bash
+ngrok http --domain=pure-daily-grackle.ngrok-free.app 8088 
+```
+
 Este é um projeto desenvolvido como parte do MBA da FIAP. O projeto é uma aplicação Java que utiliza MySQL para gerenciamento de dados e Maven para gerenciamento de dependências. A arquitetura do projeto é baseada no estilo arquitetônico Hexagonal (Ports and Adapters).
 
 ## Sobre o Projeto

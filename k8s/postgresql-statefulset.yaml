@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgresql-deployment
+  name: postgresql-statefulset
   labels:
     app: postgresql
 spec:
+  serviceName: "postgresql-service"
   replicas: 1
   selector:
     matchLabels:
@@ -29,9 +30,7 @@ spec:
           volumeMounts:
             - name: postgresql-storage
               mountPath: /var/lib/postgresql/data
-              subPath: postgresql
       volumes:
         - name: postgresql-storage
           persistentVolumeClaim:
             claimName: postgresql-pvc
-
