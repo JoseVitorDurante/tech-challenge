@@ -44,6 +44,13 @@ YAML. Siga estas etapas:
 minikube start
 ```
 
+3. Depois de rodar o comando para subir todos os recursos, rodar o comando abaixo criar um tunnel de comunicação entre o
+   seu localhost e o cluster do minikube
+
+```bash
+minikube tunnel
+```
+
 ## Executando a Aplicação no EKS
 
 Para implantar a aplicação no EKS, você precisa aplicar o arquivo de configuração do Kubernetes YAML. Siga estas etapas:
@@ -116,7 +123,7 @@ kubectl apply -f metrics.yaml
 ## Acessar a aplicação
 
 1. Local
-   http://localhost:30007/swagger-ui/index.html#
+   http://localhost/swagger-ui/index.html#
 
 2. Na nuvem
    http://<ip-do-node>/swagger-ui/index.html#
