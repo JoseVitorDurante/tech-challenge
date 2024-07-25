@@ -7,7 +7,7 @@
 1. Buildar a imagem do projeto
 
 ```bash
-docker build -t tech-challenge:local .
+docker build -t tech-challenge:latest .
 ```
 
 2. Verficar se a imagem foi criada corretamente
@@ -19,10 +19,40 @@ docker images | grep tech-challenge
 3. Caso queira deletar a imagem
 
 ```bash
-docker rmi tech-challenge:local
+docker rmi tech-challenge:latest
 ```
 
-### Rodar o projeto localmente
+4. Subir a imagem no Docker Hub
+
+```bash
+docker tag tech-challenge:latest josevitordurante/tech-challenge:latest
+docker push josevitordurante/tech-challenge:latest
+```
+
+## Executando a Aplicação Localmente com Minikube
+
+Para implantar a aplicação localmente usando Minikube, você precisa aplicar os arquivos de configuração do Kubernetes
+YAML. Siga estas etapas:
+
+#### Atenção: Troque para "local" o valor da variável de ambiente `ENVIRONMENT_DEPLOY` no arquivo `app-deployment.yaml`para rodar localmente sem rodar o script de init para setar a url de notificação do mercado pago
+
+1. Certifique-se de ter o `minikube` e o `kubectl` instalados na sua máquina.
+
+2. Inicie o Minikube:
+
+```bash
+minikube start
+```
+
+## Executando a Aplicação no EKS
+
+Para implantar a aplicação no EKS, você precisa aplicar o arquivo de configuração do Kubernetes YAML. Siga estas etapas:
+
+1. Certifique-se de ter o `kubectl` instalado e configurado para interagir com seu cluster EKS. Você pode fazer isso
+   instalando o AWS CLI e EKS CLI (`eksctl`), e
+   executando `aws eks update-kubeconfig --region <região> --name <nome-do-cluster>`.
+
+2. Aplique o arquivo de configuração do Kubernetes dentro da pasta user/.aws/credentials:
 
 #### Postgres
 
@@ -46,8 +76,6 @@ kubectl apply -f postgresql-statefulset.yaml
 
 #### Aplicação tech-challenge
 
-kubectl exec -it tech-challenge-54b9d5c896-skdln -- /bin/bash
-
 1. Rodar o service da aplicação
 
 ```bash
@@ -62,9 +90,15 @@ kubectl apply -f app-deployment.yaml
 
 #### Escalar a aplicação
 
-´´´bash
+```bash
 kubectl apply -f app-hpa.yaml
-´´´
+```
+
+#### Habilitar o metrics-server
+
+```bash
+kubectl apply -f metrics.yaml
+```
 
 ### Subir tudo
 
@@ -85,11 +119,9 @@ kubectl apply -f metrics.yaml
    http://localhost:30007/swagger-ui/index.html#
 
 2. Na nuvem
-   http://<ip-do-node>:30007/swagger-ui/index.html#
+   http://<ip-do-node>/swagger-ui/index.html#
 
 ## Verificar se os pods estão rodando corretamente
-
-kubectl exec -it tech-challenge-794dcf5747-cb2tg -- /bin/bash
 
 1. Verificar os pods
 
@@ -121,6 +153,16 @@ kubectl get pvc
 
 ```bash
 kubectl logs -f <nome-do-pod>
+```
+
+## Logs do InitContainer
+
+1. Verificar os logs do initContainer, no caso verificar script de initContainer para atualizar a url de notificação do
+   mercado pago utilizada pela aplicação
+
+```bash
+kubectl logs <pod-name> -c wait-for-lb
+kubectl logs tech-challenge-5474cd965b-kxp8z -c wait-for-lb
 ```
 
 ## Deletar os recursos
@@ -175,11 +217,28 @@ kubectl get hpa
 3. Entrar no pod
 
 ```bash
-kubectl exec -it tech-challenge-59855687f5-cfqxj  -- /bin/bash
+kubectl exec -it <nome-pod>  -- /bin/bash
 ```
 
 4. Dentro do pod, executar o comando para consumir a CPU
 
 ```bash
 stress -c 10
+```
+
+## Utilizar ngrok para expor a aplicação localmente para a internet
+
+1. Baixar o ngrok e crie sua conta:
+   https://ngrok.com/download
+
+2. configure o seu token
+
+```bash
+ngrok config add-authtoken <your-token>
+```
+
+3. Inicie o ngrok aponando para a porta do serviço, no log vai aparecer o link para acessar a aplicação
+
+```bash
+ngrok http http://localhost:<porta>
 ```

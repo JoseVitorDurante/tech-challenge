@@ -1,6 +1,6 @@
 package br.com.techChallenge.useCases.payment;
 
-import br.com.techChallenge.infra.gateways.payment.MercadoPagoClient;
+import br.com.techChallenge.application.config.UrlNotificationMercadoPagoConfig;
 import br.com.techChallenge.application.dtos.integration.mercadopago.payment.request.CashOutMercadoPago;
 import br.com.techChallenge.application.dtos.integration.mercadopago.payment.request.ItemMercadoPago;
 import br.com.techChallenge.application.dtos.integration.mercadopago.payment.request.MercadoPagoRequest;
@@ -11,22 +11,21 @@ import br.com.techChallenge.domain.entity.payment.enums.PaymentType;
 import br.com.techChallenge.domain.entity.store.StoreDomain;
 import br.com.techChallenge.domain.useCases.payment.ProcessPayment;
 import br.com.techChallenge.domain.useCases.store.FindStoreById;
+import br.com.techChallenge.infra.gateways.payment.MercadoPagoClient;
 import br.com.techChallenge.infra.persistence.entities.store.StoreEntity;
 import br.com.techChallenge.useCases.util.DateTimeUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Component(PaymentType.MERCADO_PAGO_QUALIFIER)
 public class ProcessPaymentWithMercadoPagoImpl implements ProcessPayment {
 
-    @Value("${mercado-pago.notification-url}")
-    private String notificationUrl;
+    @Autowired
+    private UrlNotificationMercadoPagoConfig urlNotificationMercadoPagoConfig;
 
     @Autowired
     private MercadoPagoClient mercadoPagoClient;
@@ -52,7 +51,7 @@ public class ProcessPaymentWithMercadoPagoImpl implements ProcessPayment {
         mercadoPagoRequest.setExpirationDate(DateTimeUtils.generateExpirationDatePayment());
         mercadoPagoRequest.setExternalReference(paymentIntegrationOrder.getOrderPaymentId().toString());
         mercadoPagoRequest.setTotalAmount(paymentIntegrationOrder.getAmount());
-        mercadoPagoRequest.setNotificationUrl(notificationUrl);
+        mercadoPagoRequest.setNotificationUrl(urlNotificationMercadoPagoConfig.getUrl());
 
         paymentIntegrationOrder.getItems().forEach(item -> {
             ItemMercadoPago itemMercadoPago = new ItemMercadoPago();

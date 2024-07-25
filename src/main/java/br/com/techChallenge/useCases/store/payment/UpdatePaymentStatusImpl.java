@@ -1,12 +1,12 @@
 package br.com.techChallenge.useCases.store.payment;
 
-import br.com.techChallenge.infra.gateways.payment.MercadoPagoClient;
 import br.com.techChallenge.application.dtos.integration.mercadopago.payment.response.MerchantOrderResponse;
 import br.com.techChallenge.domain.entity.payment.PaymentDomain;
 import br.com.techChallenge.domain.entity.payment.enums.PaymentStatus;
-import br.com.techChallenge.infra.persistence.repositories.payment.PaymentPersistencePortImpl;
 import br.com.techChallenge.domain.useCases.payment.FindPaymentById;
 import br.com.techChallenge.domain.useCases.payment.UpdatePaymentStatus;
+import br.com.techChallenge.infra.gateways.payment.MercadoPagoClient;
+import br.com.techChallenge.infra.persistence.repositories.payment.PaymentPersistencePortImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +25,7 @@ public class UpdatePaymentStatusImpl implements UpdatePaymentStatus {
 
     @Value("${mercado-pago.access-token}")
     private String accessToken;
+
     @Override
     public void execute(Long merchantOrderId) {
 
