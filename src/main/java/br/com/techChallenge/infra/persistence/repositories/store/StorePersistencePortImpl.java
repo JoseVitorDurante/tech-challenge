@@ -2,7 +2,7 @@ package br.com.techChallenge.infra.persistence.repositories.store;
 
 
 import br.com.techChallenge.domain.entity.store.StoreDomain;
-import br.com.techChallenge.domain.port.store.StorePersistencePort;
+import br.com.techChallenge.domain.persistence.store.StorePersistence;
 import br.com.techChallenge.infra.persistence.entities.store.StoreEntity;
 import br.com.techChallenge.useCases.store.exceptions.StoreNotFound;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Component
-public class StorePersistencePortImpl implements StorePersistencePort {
+public class StorePersistencePortImpl implements StorePersistence {
 
     private final StoreJpaRepository storeJpaRepository;
     private final ModelMapper modelMapper;

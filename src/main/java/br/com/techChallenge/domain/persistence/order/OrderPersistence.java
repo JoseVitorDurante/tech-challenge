@@ -1,4 +1,4 @@
-package br.com.techChallenge.domain.port.order;
+package br.com.techChallenge.domain.persistence.order;
 
 import br.com.techChallenge.domain.entity.order.OrderDomain;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface OrderPersistencePort {
+public interface OrderPersistence {
 
     Optional<OrderDomain> findById(UUID id);
 

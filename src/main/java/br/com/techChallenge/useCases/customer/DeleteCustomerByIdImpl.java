@@ -1,8 +1,8 @@
 package br.com.techChallenge.useCases.customer;
 
-import br.com.techChallenge.useCases.customer.exceptions.CustomerNotFound;
-import br.com.techChallenge.domain.port.customer.CustomerPersistencePort;
+import br.com.techChallenge.domain.persistence.customer.CustomerPersistence;
 import br.com.techChallenge.domain.useCases.customer.DeleteCustomerById;
+import br.com.techChallenge.domain.useCases.customer.FindCustomerById;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DeleteCustomerByIdImpl implements DeleteCustomerById {
 
-    private final CustomerPersistencePort customerPersistencePort;
+    private final CustomerPersistence customerPersistence;
+    private final FindCustomerById findCustomerById;
+
     @Override
     public void execute(UUID id) {
-        customerPersistencePort.findById(id)
-                .orElseThrow(CustomerNotFound::new);
-        customerPersistencePort.deleteByID(id);
+        findCustomerById.execute(id);
+        customerPersistence.deleteByID(id);
     }
 }

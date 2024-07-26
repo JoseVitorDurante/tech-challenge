@@ -2,7 +2,7 @@ package br.com.techChallenge.useCases.store.payment;
 
 import br.com.techChallenge.domain.entity.DomainEntity;
 import br.com.techChallenge.domain.entity.store.payment.MercadoPagoGatewayDomain;
-import br.com.techChallenge.domain.port.store.payment.MercadoPagoGatewayPersistencePort;
+import br.com.techChallenge.domain.persistence.store.payment.MercadoPagoGatewayPersistence;
 import br.com.techChallenge.domain.useCases.store.payment.CreateNewMercadoPagoGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateNewMercadoPagoGatewayImpl implements CreateNewMercadoPagoGateway {
 
-    private final MercadoPagoGatewayPersistencePort mercadoPagoGatewayPersistencePort;
+    private final MercadoPagoGatewayPersistence mercadoPagoGatewayPersistence;
     @Override
     public DomainEntity execute(MercadoPagoGatewayDomain mercadoPagoGatewayDomain) {
-        return mercadoPagoGatewayPersistencePort.save(mercadoPagoGatewayDomain);
+        return mercadoPagoGatewayPersistence.save(mercadoPagoGatewayDomain);
     }
 }

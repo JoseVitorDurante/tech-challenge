@@ -1,4 +1,4 @@
-package br.com.techChallenge.domain.port.store;
+package br.com.techChallenge.domain.persistence.store;
 
 import br.com.techChallenge.domain.entity.store.StoreDomain;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface StorePersistencePort {
+public interface StorePersistence {
 
     Optional<StoreDomain> findById(UUID id);
 

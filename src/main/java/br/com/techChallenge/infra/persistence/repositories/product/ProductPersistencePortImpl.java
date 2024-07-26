@@ -2,7 +2,7 @@ package br.com.techChallenge.infra.persistence.repositories.product;
 
 
 import br.com.techChallenge.domain.entity.product.ProductDomain;
-import br.com.techChallenge.domain.port.product.ProductPersistencePort;
+import br.com.techChallenge.domain.persistence.product.ProductPersistence;
 import br.com.techChallenge.infra.persistence.entities.product.ProductEntity;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Component
-public class ProductPersistencePortImpl implements ProductPersistencePort {
+public class ProductPersistencePortImpl implements ProductPersistence {
 
     private final ProductJpaRepository productJpaRepository;
     private final ModelMapper modelMapper;

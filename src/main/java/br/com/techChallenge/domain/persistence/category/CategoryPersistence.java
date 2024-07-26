@@ -1,4 +1,4 @@
-package br.com.techChallenge.domain.port.category;
+package br.com.techChallenge.domain.persistence.category;
 
 import br.com.techChallenge.domain.entity.category.CategoryDomain;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CategoryPersistencePort {
+public interface CategoryPersistence {
 
     Optional<CategoryDomain> findById(UUID id);
 

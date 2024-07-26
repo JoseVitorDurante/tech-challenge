@@ -1,11 +1,11 @@
-package br.com.techChallenge.domain.port.payment;
+package br.com.techChallenge.domain.persistence.payment;
 
 import br.com.techChallenge.domain.entity.payment.PaymentDomain;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PaymentPersistencePort {
+public interface PaymentPersistence {
 
     PaymentDomain save(PaymentDomain paymentDomain);
 

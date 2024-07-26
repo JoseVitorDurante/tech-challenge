@@ -1,11 +1,11 @@
-package br.com.techChallenge.domain.port.store.payment;
+package br.com.techChallenge.domain.persistence.store.payment;
 
 import br.com.techChallenge.domain.entity.store.payment.MercadoPagoGatewayDomain;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MercadoPagoGatewayPersistencePort {
+public interface MercadoPagoGatewayPersistence {
 
     Optional<MercadoPagoGatewayDomain> findById(UUID id);
 

@@ -2,7 +2,7 @@ package br.com.techChallenge.infra.persistence.repositories.category;
 
 
 import br.com.techChallenge.domain.entity.category.CategoryDomain;
-import br.com.techChallenge.domain.port.category.CategoryPersistencePort;
+import br.com.techChallenge.domain.persistence.category.CategoryPersistence;
 import br.com.techChallenge.infra.persistence.entities.category.CategoryEntity;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Component
-public class CategoryPersistencePortImpl implements CategoryPersistencePort {
+public class CategoryPersistencePortImpl implements CategoryPersistence {
 
     private final CategoryJpaRepository categoryJpaRepository;
     private final ModelMapper modelMapper;

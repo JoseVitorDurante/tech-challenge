@@ -1,12 +1,12 @@
 package br.com.techChallenge.useCases.category;
 
-import br.com.techChallenge.useCases.category.exceptions.CategoryNotFound;
-import br.com.techChallenge.useCases.category.exceptions.ExistProductInCategory;
 import br.com.techChallenge.domain.entity.category.CategoryDomain;
 import br.com.techChallenge.domain.entity.product.ProductDomain;
-import br.com.techChallenge.domain.port.category.CategoryPersistencePort;
-import br.com.techChallenge.domain.port.product.ProductPersistencePort;
+import br.com.techChallenge.domain.persistence.category.CategoryPersistence;
 import br.com.techChallenge.domain.useCases.category.DeleteCategoryById;
+import br.com.techChallenge.domain.useCases.product.FindAllByCategoryId;
+import br.com.techChallenge.useCases.category.exceptions.CategoryNotFound;
+import br.com.techChallenge.useCases.category.exceptions.ExistProductInCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +18,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DeleteCategoryByIdImpl implements DeleteCategoryById {
 
-    private final CategoryPersistencePort categoryPersistencePort;
+    private final CategoryPersistence categoryPersistence;
+    private final FindAllByCategoryId findAllByCategoryId;
 
-    private final ProductPersistencePort productPersistencePort;
     @Override
     public void execute(UUID id) {
 
-        CategoryDomain categoryDomain = categoryPersistencePort.findById(id)
+        CategoryDomain categoryDomain = categoryPersistence.findById(id)
                 .orElseThrow(CategoryNotFound::new);
 
-        List<ProductDomain> allByCategory = productPersistencePort.findAllByCategory(categoryDomain.getId());
+        List<ProductDomain> allByCategory = findAllByCategoryId.execute(categoryDomain.getId());
 
         if (!allByCategory.isEmpty()) {
             String productDetails = allByCategory.stream()
@@ -36,7 +36,7 @@ public class DeleteCategoryByIdImpl implements DeleteCategoryById {
             throw new ExistProductInCategory("Exist product in category, details: " + productDetails);
         }
 
-        categoryPersistencePort.deleteByID(id);
+        categoryPersistence.deleteByID(id);
 
     }
 }

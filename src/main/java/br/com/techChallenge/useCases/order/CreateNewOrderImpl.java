@@ -6,16 +6,15 @@ import br.com.techChallenge.domain.entity.order.enums.StatusOrder;
 import br.com.techChallenge.domain.entity.order.item.OrderItemDomain;
 import br.com.techChallenge.domain.entity.payment.PaymentDomain;
 import br.com.techChallenge.domain.entity.payment.enums.PaymentType;
-import br.com.techChallenge.domain.port.order.OrderPersistencePort;
-import br.com.techChallenge.domain.port.order.item.OrderItemPersistencePort;
-import br.com.techChallenge.domain.port.product.ProductPersistencePort;
-import br.com.techChallenge.domain.port.store.StorePersistencePort;
+import br.com.techChallenge.domain.persistence.order.OrderPersistence;
 import br.com.techChallenge.domain.useCases.customer.FindCustomerByCPF;
 import br.com.techChallenge.domain.useCases.order.CreateNewOrder;
+import br.com.techChallenge.domain.useCases.order.item.CreateNewOrderItem;
 import br.com.techChallenge.domain.useCases.payment.MakeANewPayment;
 import br.com.techChallenge.domain.useCases.payment.ProcessPayment;
-import br.com.techChallenge.useCases.payment.ProcessPaymentWithCieloImpl;
-import br.com.techChallenge.useCases.payment.ProcessPaymentWithMercadoPagoImpl;
+import br.com.techChallenge.domain.useCases.product.FindProductById;
+import br.com.techChallenge.domain.useCases.product.FindProductByIdAndIdStore;
+import br.com.techChallenge.domain.useCases.store.FindStoreById;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +26,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CreateNewOrderImpl implements CreateNewOrder {
 
-    private final OrderPersistencePort orderPersistencePort;
-    private final ProductPersistencePort productPersistencePort;
-    private final OrderItemPersistencePort orderItemPersistencePort;
-    private final StorePersistencePort storePersistencePort;
+    private final OrderPersistence orderPersistence;
+    private final CreateNewOrderItem createNewOrderItem;
+    private final FindStoreById findStoreById;
+    private final FindProductById findProductById;
+    private final FindProductByIdAndIdStore findProductByIdAndIdStore;
     private final MakeANewPayment makeANewPayment;
     private final FindCustomerByCPF findCustomerByCPF;
     private final Map<String, ProcessPayment> processPaymentList;
     @Override
     public OrderDomain execute(OrderDomain orderDomain, String cpf, PaymentType provider) {
 
-        orderDomain.validatedStore(storePersistencePort);
+        orderDomain.validatedStore(findStoreById);
         orderDomain.validatedQuantityItems(orderDomain.getItems());
-        orderDomain.validatedItemOrException(productPersistencePort);
+        orderDomain.validatedItemOrException(findProductByIdAndIdStore);
 
 
         if (cpf != null) {
@@ -48,17 +48,17 @@ public class CreateNewOrderImpl implements CreateNewOrder {
             orderDomain.setCustomer(customerDomain);
         }
 
-        orderDomain.calculateTotal(productPersistencePort);
+        orderDomain.calculateTotal(findProductById);
 
         orderDomain.setStatus(StatusOrder.RECEIVED);
 
-        OrderDomain orderDomainSave = orderPersistencePort.save(orderDomain);
+        OrderDomain orderDomainSave = orderPersistence.save(orderDomain);
 
         List<OrderItemDomain> savedItems = orderDomain.getItems().stream()
                 .map(item -> {
                     item.setIdOrder(orderDomainSave.getId());
                     item.setOrder(orderDomainSave);
-                    return orderItemPersistencePort.save(item);
+                    return createNewOrderItem.execute(item);
                 })
                 .collect(Collectors.toList());
 
@@ -72,6 +72,6 @@ public class CreateNewOrderImpl implements CreateNewOrder {
         orderDomainSave.setPayment(payment);
         orderDomainSave.setIdPayment(payment.getId());
 
-        return orderPersistencePort.save(orderDomainSave);
+        return orderPersistence.save(orderDomainSave);
     }
 }

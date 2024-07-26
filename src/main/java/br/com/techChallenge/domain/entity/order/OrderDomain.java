@@ -1,12 +1,5 @@
 package br.com.techChallenge.domain.entity.order;
 
-import br.com.techChallenge.useCases.order.exceptions.EmptyOrderItems;
-import br.com.techChallenge.useCases.order.exceptions.OrderPaymentApproved;
-import br.com.techChallenge.useCases.order.exceptions.ProductInOrderNotFound;
-import br.com.techChallenge.useCases.order.item.exceptions.EmptyQuantityItems;
-import br.com.techChallenge.useCases.product.exceptions.ProductNotFound;
-import br.com.techChallenge.useCases.store.exceptions.StoreInactive;
-import br.com.techChallenge.useCases.store.exceptions.StoreNotFound;
 import br.com.techChallenge.domain.entity.DomainEntity;
 import br.com.techChallenge.domain.entity.customer.CustomerDomain;
 import br.com.techChallenge.domain.entity.order.enums.StatusOrder;
@@ -14,8 +7,14 @@ import br.com.techChallenge.domain.entity.order.item.OrderItemDomain;
 import br.com.techChallenge.domain.entity.payment.PaymentDomain;
 import br.com.techChallenge.domain.entity.payment.enums.PaymentStatus;
 import br.com.techChallenge.domain.entity.store.StoreDomain;
-import br.com.techChallenge.domain.port.product.ProductPersistencePort;
-import br.com.techChallenge.domain.port.store.StorePersistencePort;
+import br.com.techChallenge.domain.useCases.product.FindProductById;
+import br.com.techChallenge.domain.useCases.product.FindProductByIdAndIdStore;
+import br.com.techChallenge.domain.useCases.store.FindStoreById;
+import br.com.techChallenge.useCases.order.exceptions.EmptyOrderItems;
+import br.com.techChallenge.useCases.order.exceptions.OrderPaymentApproved;
+import br.com.techChallenge.useCases.order.item.exceptions.EmptyQuantityItems;
+import br.com.techChallenge.useCases.product.exceptions.ProductNotFound;
+import br.com.techChallenge.useCases.store.exceptions.StoreInactive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,9 +43,8 @@ public class OrderDomain extends DomainEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public void validatedStore(StorePersistencePort storePersistencePort) {
-        StoreDomain storeDomain = storePersistencePort.findById(this.getIdStore())
-                .orElseThrow(StoreNotFound::new);
+    public void validatedStore(FindStoreById findStoreById) {
+        StoreDomain storeDomain = findStoreById.execute(this.getIdStore());
 
         if (!storeDomain.isActive())
             throw new StoreInactive();
@@ -65,15 +63,14 @@ public class OrderDomain extends DomainEntity {
         }
     }
 
-    public void validatedItemOrException(ProductPersistencePort productPersistencePort) {
-        this.getItems().forEach(item -> item.setProduct(productPersistencePort.findByIdAndIdStore(item.getIdProduct(), this.getIdStore())
-                .orElseThrow(() -> new ProductInOrderNotFound("Product with id " + item.getIdProduct() + ", by idStore: " + idStore + " not found"))));
+    public void validatedItemOrException(FindProductByIdAndIdStore findProductByIdAndIdStore) {
+        this.getItems().forEach(item ->
+                findProductByIdAndIdStore.execute(item.getIdProduct(), this.getIdStore()));
     }
 
-    public void calculateTotal(ProductPersistencePort productPersistencePort) {
+    public void calculateTotal(FindProductById findProductById) {
         this.setTotal(this.getItems().stream()
-                .map(item -> productPersistencePort.findById(item.getIdProduct())
-                        .orElseThrow(ProductNotFound::new)
+                .map(item -> findProductById.execute(item.getIdProduct())
                         .getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal::add)
                 .orElseThrow(ProductNotFound::new));

@@ -2,7 +2,7 @@ package br.com.techChallenge.infra.persistence.repositories.payment;
 
 
 import br.com.techChallenge.domain.entity.payment.PaymentDomain;
-import br.com.techChallenge.domain.port.payment.PaymentPersistencePort;
+import br.com.techChallenge.domain.persistence.payment.PaymentPersistence;
 import br.com.techChallenge.infra.persistence.entities.payment.PaymentEntity;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Component
-public class PaymentPersistencePortImpl implements PaymentPersistencePort {
+public class PaymentPersistencePortImpl implements PaymentPersistence {
 
     private final PaymentJpaRepository paymentJpaRepository;
     private final ModelMapper modelMapper;
