@@ -1,8 +1,7 @@
 # Tech Challenge
 
 Este é um projeto desenvolvido como parte do MBA da FIAP. Trata-se de uma aplicação Java para gerenciamento de pedidos,
-utilizando MySQL para persistência de dados e Maven para gerenciamento de dependências. O projeto segue a arquitetura
-Hexagonal (Ports and Adapters) para promover a separação de preocupações.
+utilizando MySQL para persistência de dados e Maven para gerenciamento de dependências.
 
 ## Sobre o Projeto
 
