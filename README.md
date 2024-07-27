@@ -28,21 +28,7 @@ link [Fast Food Event Storming](https://miro.com/app/board/uXjVKPW0siQ=/).
 ### Arquitetura Limpa (Clean Architecture)
 
 A arquitetura Limpa (Clean Architecture) promove a separação de preocupações e a independência de frameworks e
-tecnologias específicas. Ela divide o sistema em camadas com responsabilidades bem definidas:
-
-- **Entidades**: Regras de negócio genéricas e independentes de tecnologia.
-- **Casos de Uso**: Lógica de aplicação específica, orquestrando as entidades.
-- **Interface de Entrada**: Define os casos de uso oferecidos pela aplicação (ex: API REST).
-- **Interface de Saída**: Define as interfaces para interagir com sistemas externos (ex: bancos de dados).
-- **Adaptadores**: Implementam as interfaces de entrada e saída, conectando a lógica de negócio com tecnologias
-  específicas.
-
-No contexto deste projeto, temos as seguintes pastas:
-
-- **entities**: Contém as entidades do domínio.
-- **usecases**: Contém os casos de uso.
-- **adapters**: Contém os adaptadores que implementam as interfaces de entrada e saída.
-- **interfaces**: Contém as interfaces de entrada e saída.
+tecnologias específicas. Ela divide o sistema em camadas com responsabilidades bem definidas.
 
 ## Como Rodar o Projeto
 
