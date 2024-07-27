@@ -39,7 +39,7 @@ O projeto está configurado para ser executado em um container Docker. Para exec
 1. **Clone o repositório** para o seu sistema local:
 
 ```bash
-  git clone [URL_DO_REPOSITORIO]
+  git clone https://github.com/JoseVitorDurante/tech-challenge.git
 ```
 
 2. **Navegue até o diretório do projeto:**:
