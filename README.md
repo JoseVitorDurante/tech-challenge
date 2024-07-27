@@ -1,71 +1,99 @@
-# Tech-challenge
+# Tech Challenge
 
-Para Rodar no ngrok e testar a aplicação, siga os passos abaixo:
-
-1. Rodar o comando
-
-```bash
-ngrok http --domain=pure-daily-grackle.ngrok-free.app 8088 
-```
-
-Este é um projeto desenvolvido como parte do MBA da FIAP. O projeto é uma aplicação Java que utiliza MySQL para
-gerenciamento de dados e Maven para gerenciamento de dependências. A arquitetura do projeto é baseada no estilo
-arquitetônico Hexagonal (Ports and Adapters).
+Este é um projeto desenvolvido como parte do MBA da FIAP. Trata-se de uma aplicação Java para gerenciamento de pedidos,
+utilizando MySQL para persistência de dados e Maven para gerenciamento de dependências. O projeto segue a arquitetura
+Hexagonal (Ports and Adapters) para promover a separação de preocupações.
 
 ## Sobre o Projeto
 
-O projeto é uma aplicação de pedidos, onde os usuários podem criar, atualizar e excluir pedidos. Cada pedido pode ter
-vários itens e cada item está associado a um pedido.
+O projeto é uma aplicação de pedidos, onde os usuários podem criar, atualizar e excluir pedidos. Cada pedido pode conter
+vários itens, e cada item está associado a um pedido.
 
-O projeto utiliza o framework Spring Boot para a criação da aplicação e o Hibernate para o mapeamento objeto-relacional.
-Além disso, o projeto utiliza o ModelMapper para mapear entre objetos de domínio e DTOs.
+### Diagrama de Arquitetura
 
-O projeto foi desenvolvido utilizando Java 21 e Maven 3.8.6. O banco de dados utilizado é PostgreSQL.
+Abaixo está o diagrama de arquitetura do projeto, que ilustra a estrutura e os componentes principais da aplicação:
 
-É possível visualizar o Event Storming da solução pela ferramenta Miro atraves do
-link [Fast Food Event Storming](https://miro.com/app/board/uXjVKPW0siQ=/).
+![Diagrama de Arquitetura](tech_challenge_architecture.svg)
 
-### Arquitetura Limpa (Clean Architecture)
+### Tecnologias Utilizadas
 
-A arquitetura Limpa (Clean Architecture) promove a separação de preocupações e a independência de frameworks e
-tecnologias específicas. Ela divide o sistema em camadas com responsabilidades bem definidas.
+- **Java 21**
+- **Maven 3.8.6**
+- **Spring Boot**
+- **Hibernate**
+- **ModelMapper**
+- **Docker**
+- **Kubernetes**
+- **MySQL**
+
+### Arquitetura Hexagonal (Clean Architecture)
+
+A arquitetura Hexagonal promove a separação de preocupações e a independência de frameworks e tecnologias específicas.
+Ela divide o sistema em camadas com responsabilidades bem definidas, garantindo que as regras de negócio não sejam
+afetadas por mudanças em frameworks ou interfaces externas.
 
 ## Como Rodar o Projeto
 
-O projeto é configurado para rodar em um container Docker. Para rodar o projeto, você precisará ter o Docker instalado
-em seu sistema.
+O projeto está configurado para ser executado em um container Docker. Para executar o projeto, siga os passos abaixo:
 
-1. Clone o repositório para o seu sistema local.
-
-2. Navegue até o diretório do projeto.
-
-3. Rode o Docker Compose com o seguinte comando:
+1. **Clone o repositório** para o seu sistema local:
 
 ```bash
-docker compose up --build --force-recreate
+  git clone [URL_DO_REPOSITORIO]
 ```
 
-Ou para com kubernetes:
+2. **Navegue até o diretório do projeto:**:
 
 ```bash
-kubectl apply -f ./k8
+  cd tech-challenge
+```
+
+3. **Execute o comando para subir o container Docker**:
+
+```bash
+  docker compose up --build --force-recreate
+```
+
+Alternativamente, para execução com Kubernetes:
+
+```bash
+  kubectl apply -f ./k8s
+```
+
+### Expondo a Aplicação com Ngrok
+
+Para expor a aplicação para a internet e realizar testes externos, utilize o Ngrok:
+
+```bash
+  ngrok http --domain=pure-daily-grackle.ngrok-free.app 8088
 ```
 
 ## Documentação da API
 
-A documentação da API está disponível através do Swagger UI. Você pode acessá-la
-em http://localhost:8080/swagger-ui/index.html#/
+A documentação da API está disponível no Swagger, e pode ser acessada através do link:
+
+```
+  http://localhost:8088/swagger-ui.html
+```
 
 ## Dados de Teste
 
-O projeto já possui dados salvos por padrão no banco para facilitar as operações de teste. Todas as entidades, exceto
-pedidos, possuem dados pré-carregados.
+O projeto inclui dados de teste pré-carregados para facilitar as operações. Todas as entidades, exceto pedidos, possuem
+dados de exemplo.
 
-## Estrutura do Projeto
+## Teste de Estresse com K6
 
-O projeto é estruturado da seguinte maneira:
+Para realizar testes de estresse na aplicação, utilizamos o K6. Siga os passos abaixo para executar o teste:
 
-- `techChallenge/k8s`: Contém os arquivos de configuração do Kubernetes (K8s).
-- `src/main/java/br/com/techChallenge`: Contém o código fonte Java do projeto.
-- `src/main/resources`: Contém os recursos do projeto, como arquivos de configuração e scripts SQL.
-- `README.md`: Este arquivo.
+Instale o K6 no seu sistema. Para instruções detalhadas, visite a documentação oficial do K6.
+
+### Executando o Teste de Estresse
+
+```bash
+  k6 run load-load-test.js
+```
+
+**Observação:**
+Certifique-se de que todos os pré-requisitos estão instalados e configurados corretamente antes de iniciar o projeto.
+Para qualquer dúvida ou problema, consulte a documentação oficial das ferramentas utilizadas ou entre em contato com o
+responsável pelo projeto.
