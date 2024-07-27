@@ -10,7 +10,7 @@ export let options = {
 };
 
 export default function () {
-    let response = http.get('https://ruqvuimgf2.execute-api.us-east-1.amazonaws.com/beta/pedidos');
-    check(response, { 'status was 200': (r) => r.status == 200 });
+    let response = http.get('https://warm-sheepdog-secondly.ngrok-free.app/order/all');
+    check(response, { 'status was 200': (r) => r.status === 200 });
     sleep(1);
 }
