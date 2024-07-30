@@ -1,12 +1,16 @@
 # Tech Challenge
 
 Este é um projeto desenvolvido como parte do MBA da FIAP. Trata-se de uma aplicação Java para gerenciamento de pedidos,
-utilizando MySQL para persistência de dados e Maven para gerenciamento de dependências.
+utilizando Postgres para persistência de dados e Maven para gerenciamento de dependências.
 
 ## Sobre o Projeto
 
 O projeto é uma aplicação de pedidos, onde os usuários podem criar, atualizar e excluir pedidos. Cada pedido pode conter
 vários itens, e cada item está associado a um pedido.
+
+### Video de apresentação da arquitetura do projeto
+
+[![Video de Apresentação da Arquitetura](https://img.youtube.com/vi/7pZ2tByl9t8/0.jpg)](https://www.youtube.com/watch?v=7pZ2tByl9t8)
 
 ### Diagrama de Arquitetura
 
@@ -23,13 +27,7 @@ Abaixo está o diagrama de arquitetura do projeto, que ilustra a estrutura e os 
 - **ModelMapper**
 - **Docker**
 - **Kubernetes**
-- **MySQL**
-
-### Arquitetura Hexagonal (Clean Architecture)
-
-A arquitetura Hexagonal promove a separação de preocupações e a independência de frameworks e tecnologias específicas.
-Ela divide o sistema em camadas com responsabilidades bem definidas, garantindo que as regras de negócio não sejam
-afetadas por mudanças em frameworks ou interfaces externas.
+- **Postgres**
 
 ## Como Rodar o Projeto
 
@@ -59,13 +57,36 @@ Alternativamente, para execução com Kubernetes:
   kubectl apply -f ./k8s
 ```
 
+Para mais detalhes acesse o arquivo README.md na pasta k8s. [README.md](k8s%2FREADME.md)
+
 ### Expondo a Aplicação com Ngrok
 
 Para expor a aplicação para a internet e realizar testes externos, utilize o Ngrok:
 
 ```bash
-  ngrok http --domain=pure-daily-grackle.ngrok-free.app 8088
+choco install ngrok
 ```
+
+```bash
+ngrok config add-authtoken <your-token>
+```
+
+```bash
+ngrok http http://localhost:8080
+```
+
+depois de rodar os comandos acima, copie o link gerado pelo ngrok informe no aplication.yaml a url gerada pelo ngrok ou
+utilize o endPoint de update url do mercado pago
+
+curl:
+
+```bash
+curl -X 'PUT' \
+  'http://localhost:8088/config/mercado-pago-url' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '"https://sua-url-base.com"'
+  ```
 
 ## Documentação da API
 
